@@ -49,9 +49,11 @@ int main(int argc, char **argv)
 
 	if (argc >= 3) {
 		ret = parse_args(argc, argv, &args);
-		printf("path given      : %s\n", args.path);
-		printf("team_id given   : %d\n", args.team_id);
-		printf("team_name given : %s\n", args.team_name);
+		if (ret != 84) {
+			printf("path given      : %s\n", args.path);
+			printf("team_id given   : %d\n", args.team_id);
+			printf("team_name given : %s\n", args.team_name);
+		}
 		return (ret);
 	}
 	if (argc >= 2 && (strcmp(argv[1], FLAGS[1]) == 0 ||
