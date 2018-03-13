@@ -11,7 +11,8 @@ RM	=	rm -f
 
 NAME	=	lemipc
 
-SRC	=	main.c
+SRC	=	main.c				\
+		lemipc.c
 
 OBJ	=	$(SRC:.c=.o)
 
