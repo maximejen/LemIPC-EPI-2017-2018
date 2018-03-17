@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include "include/lemipc.h"
 
-static const char FLAGS[5][11] = {
+static const char FLAGS[5][12] = {
 "-tn",
 "--help",
 "-h",

@@ -8,6 +8,10 @@
 #ifndef LEMIPC_LEMIPC_H
 	#define LEMIPC_LEMIPC_H
 
+	#define HEIGHT 30
+	#define WIDTH 30
+
+
 typedef struct args_s {
 	char *path;
 	int team_id;
@@ -25,12 +29,19 @@ typedef struct args_s {
 typedef struct shared_mem_s {
 	size_t width;
 	size_t height;
-	int **map;
+	int map[HEIGHT][WIDTH]; // shouln'd it be int map[HEIGHT * WIDTH] ?
 } sh_mem_t;
 
 typedef struct lemipc_s {
 	sh_mem_t *mem;
+	int shm_id;
+	key_t key;
+	args_t *args;
 } lemipc_t;
+
+typedef struct graph_print_s {
+
+} graph_print_t;
 
 
 /*
@@ -38,7 +49,7 @@ typedef struct lemipc_s {
 */
 void lemipc_init(args_t *args);
 
-// need it because stdio.h does not have it...
+// need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);
 
 #endif //LEMIPC_LEMIPC_H
