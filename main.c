@@ -35,6 +35,11 @@ static void fill_string(char **str, const char *to_copy)
 	*str = strdup(to_copy);
 }
 
+/*
+** Description:
+**  This function parse the arguments sent by the user when exec the program
+**  then it stores the datas in a struct args_t.
+*/
 static int parse_args(int argc, char **argv, args_t *args)
 {
 	struct stat buf;

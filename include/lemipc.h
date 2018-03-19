@@ -11,7 +11,6 @@
 	#define HEIGHT 30
 	#define WIDTH 30
 
-
 typedef struct args_s {
 	char *path;
 	int team_id;
@@ -29,12 +28,19 @@ typedef struct args_s {
 typedef struct shared_mem_s {
 	size_t width;
 	size_t height;
-	int map[HEIGHT][WIDTH]; // shouln'd it be int map[HEIGHT * WIDTH] ?
+	int map[HEIGHT][WIDTH];
 } sh_mem_t;
 
+/*
+** two semaphores will be created.
+** id 0 is sem to write in the map
+** id 1 is sem to create commander
+*/
 typedef struct lemipc_s {
 	sh_mem_t *mem;
 	int shm_id;
+	int sem_id;
+	int msg_id;
 	key_t key;
 	args_t *args;
 } lemipc_t;
