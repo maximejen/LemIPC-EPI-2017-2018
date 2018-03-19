@@ -73,9 +73,6 @@ static void init_message_queue(lemipc_t *lem)
 	lem->msg_id = msgget(lem->key, SHM_W | SHM_R);
 	if (lem->msg_id == -1) {
 		lem->msg_id = msgget(lem->key, IPC_CREAT | SHM_W | SHM_R);
-		if (lem->msg_id != -1) {
-			semctl(lem->msg_id, 0, SETVAL, 1);
-		}
 	}
 	msgctl(lem->msg_id, IPC_RMID, NULL);
 }

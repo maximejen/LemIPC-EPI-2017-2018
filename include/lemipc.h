@@ -10,6 +10,7 @@
 
 	#define HEIGHT 30
 	#define WIDTH 30
+	#define MSG_SIZE 32
 
 typedef struct args_s {
 	char *path;
@@ -30,6 +31,11 @@ typedef struct shared_mem_s {
 	size_t height;
 	int map[HEIGHT][WIDTH];
 } sh_mem_t;
+
+typedef struct msg_s {
+	long mtype;
+	char data[MSG_SIZE];
+} msg_t;
 
 /*
 ** two semaphores will be created.
