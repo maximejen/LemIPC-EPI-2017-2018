@@ -37,7 +37,7 @@ void *graphical_render(void *arg)
 
 	if (load_graph_lib(lem, &handle) == -1)
 		return ("KO");
-	printf(WELCOME_MESSAGE);
+	printf("%s", WELCOME_MESSAGE);
 	dlclose(handle);
 	return ("OK");
 }

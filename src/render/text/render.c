@@ -80,7 +80,7 @@ void *textual_render(void *arg)
 {
 	lemipc_t *lem = arg;
 
-	printf(WELCOME_MESSAGE);
+	printf("%s", WELCOME_MESSAGE);
 	printf("\e[?25l");
 	fflush(stdout);
 	for (int i = 0 ; i < 1000 ; i++) {
