@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 	if (argc >= 3) {
 		ret = parse_args(argc, argv, &args);
 		if (ret != 84) {
-			lemipc_init(&args);
+			lemipc_start(&args);
 		}
 		free_args(&args);
 		return (ret);

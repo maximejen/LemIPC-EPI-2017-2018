@@ -12,13 +12,15 @@ RM	=	rm -f
 NAME	=	lemipc
 
 SRC	=	main.c				\
-		lemipc.c
+		lemipc.c            		\
+		initipc.c			\
+		render/text/render.c
 
 OBJ	=	$(SRC:.c=.o)
 
 CFLAGS	=	-I include -W -Wall -Wextra -g
 
-LDFLAGS	=
+LDFLAGS	=	-lpthread
 
 all: $(NAME)
 

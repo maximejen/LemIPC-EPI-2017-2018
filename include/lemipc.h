@@ -12,6 +12,9 @@
 	#define WIDTH 30
 	#define MSG_SIZE 32
 
+	#include <sys/ipc.h>
+	#include <pthread.h>
+
 typedef struct args_s {
 	char *path;
 	int team_id;
@@ -47,8 +50,10 @@ typedef struct lemipc_s {
 	int shm_id;
 	int sem_id;
 	int msg_id;
+	unsigned short is_first;
 	key_t key;
 	args_t *args;
+	pthread_t graph_thread;
 } lemipc_t;
 
 typedef struct graph_print_s {
@@ -59,7 +64,16 @@ typedef struct graph_print_s {
 /*
 ** Functions
 */
-void lemipc_init(args_t *args);
+int lemipc_start(args_t *args);
+void init_shared_memory(lemipc_t *lem);
+void init_semaphores(lemipc_t *lem);
+void init_message_queue(lemipc_t *lem);
+
+/*
+** Render Functions
+*/
+void *textual_render(void *arg);
+void print_map(lemipc_t *lem, int back);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);
