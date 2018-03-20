@@ -8,36 +8,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
+#include <SFML/Graphics/Types.h>
 #include "../../../include/lemipc.h"
 
 static const char *WELCOME_MESSAGE = "You just entered the graphical"
-	"thread...\nEnjoy your experience\n\n";
+	" thread...\nEnjoy your experience\n\n";
 
-static const int FLAGS = RTLD_NOW | RTLD_GLOBAL;
-
-static int load_graph_lib(lemipc_t *lem, void **handle)
+static void draw_window(sfRenderWindow *window, sfTexture *texture,
+			sfSprite *sprite, lemipc_t *lem)
 {
-	char *path = lem->args->graphical_lib_path;
+	sfEvent e;
 
-	if (path != NULL) {
-		*handle = dlopen(lem->args->graphical_lib_path, FLAGS);
-		if (!(*handle)) {
-			fprintf(stderr, "%s\n", dlerror());
-			return (-1);
-		}
-		dlerror();
+	(void)lem;
+	(void)texture;
+	(void)sprite;
+	while (sfRenderWindow_pollEvent(window, &e))
+	{
+		if (e.type == sfEvtClosed || (is_esc_pressed(&e) == 1) ||
+			!CONTINUE)
+			sfRenderWindow_close(window);
 	}
-	return (0);
+	sfRenderWindow_clear(window, sfBlack);
+	// Todo : Draw the rectangles in the texture
+	// Todo : Draw the sprite in the window
+//	sfRenderWindow_drawSprite(window, sprite, NULL);
+	sfRenderWindow_display(window);
+}
+
+static void render_map(lemipc_t *lem)
+{
+	sfRenderWindow *window = open_window("LemIPC");
+	sfTexture *texture = sfTexture_create(WIN_WIDTH, WIN_HEIGHT);
+	sfSprite *sprite = sfSprite_create();
+
+	sfSprite_setTexture(sprite, texture, sfTrue);
+	while (sfRenderWindow_isOpen(window) && CONTINUE)
+	{
+		draw_window(window, texture, sprite, lem);
+	}
+	sfRenderWindow_destroy(window);
+	sfTexture_destroy(texture);
+	sfSprite_destroy(sprite);
 }
 
 void *graphical_render(void *arg)
 {
 	lemipc_t *lem = arg;
-	void *handle = NULL;
 
-	if (load_graph_lib(lem, &handle) == -1)
-		return ("KO");
 	printf("%s", WELCOME_MESSAGE);
-	dlclose(handle);
+	// Todo : Here, launch the graphical render.
+	render_map(lem);
 	return ("OK");
 }

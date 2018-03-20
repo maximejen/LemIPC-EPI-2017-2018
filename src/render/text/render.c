@@ -8,13 +8,16 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../../../include/lemipc.h"
+#include "../../../include/color.h"
+
+int CONTINUE;
 
 static const char *chars[8] = {
 	"┏", "┓", "┗", "┛", "━", "┃", "━━", "━━━━━━━━"
 };
 
 static const char *WELCOME_MESSAGE = "You just entered the textual printing"
-	"thread...\nEnjoy your experience...\n\n";
+	" thread...\nEnjoy your experience...\n\n";
 
 /*
 ** The purpose of this function is to print a char in the color dedicated
@@ -22,9 +25,11 @@ static const char *WELCOME_MESSAGE = "You just entered the textual printing"
 */
 static void print_char(int team_id)
 {
-	team_id = team_id % 256;
+	color_t *color = get_color((unsigned int)team_id);
+
 	if (team_id)
-		printf("\e[48;5;%dm  \e[0m", team_id);
+		printf("\e[48;5;%d;%d;%dm  \e[0m",
+		       color->r, color->g, color->b);
 	else
 		printf("\e[0m  ");
 	fflush(stdout);
@@ -53,14 +58,15 @@ void print_map(lemipc_t *lem, int back)
 	size_t height = lem->mem->height;
 	size_t width = lem->mem->width;
 
-	lem->mem->map[10][15] = 1;
 	write(1, chars[0], 3);
 	print_line(width);
 	printf("%s\n", chars[1]);
 	for (size_t i = 0 ; i < height ; i++) {
 		write(1, chars[5], 3);
-		for (size_t j = 0 ; j < width ; j++)
-			print_char(lem->mem->map[i][j]);
+		for (size_t j = 0 ; j < width ; j++) {
+//			print_char(lem->mem->map[i][j]);
+			print_char(i + j * WIDTH);
+		}
 		printf("%s\n", chars[5]);
 	}
 	write(1, chars[2], 3);
@@ -83,7 +89,7 @@ void *textual_render(void *arg)
 	printf("%s", WELCOME_MESSAGE);
 	printf("\e[?25l");
 	fflush(stdout);
-	for (int i = 0 ; i < 1000 ; i++) {
+	while (CONTINUE) {
 		print_map(lem, 1);
 	}
 	print_map(lem, 0);

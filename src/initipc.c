@@ -37,7 +37,7 @@ void init_shared_memory(lemipc_t *lem)
 	}
 	else
 		lem->mem = shmat(lem->shm_id, NULL, SHM_R | SHM_W);
-//	shmctl(lem->shm_id, IPC_RMID, NULL);
+	shmctl(lem->shm_id, IPC_RMID, NULL);
 }
 
 /*

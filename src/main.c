@@ -35,20 +35,6 @@ static void fill_string(char **str, const char *to_copy)
 	*str = strdup(to_copy);
 }
 
-static int graph_is_valid(char *str, args_t *args)
-{
-	struct stat buf;
-
-	if (stat(str, &buf) != -1) {
-		if (buf.st_mode != S_IFDIR) {
-			fill_string(&args->graphical_lib_path, str);
-			args->is_graphical = 1;
-			return (1);
-		}
-	}
-	return (0);
-}
-
 /*
 ** Description:
 **  This function parse the arguments sent by the user when exec the program
@@ -68,10 +54,8 @@ static int parse_args(int argc, char **argv, args_t *args)
 			fill_string(&args->team_name, argv[i]);
 		}
 		else if ((strcmp(argv[i], FLAGS[3]) == 0 ||
-		strcmp(argv[i], FLAGS[4]) == 0) && (i + 1) < argc) {
-			i++;
-			graph_is_valid(argv[i], args);
-		}
+		strcmp(argv[i], FLAGS[4]) == 0))
+			args->is_graphical = 1;
 	}
 	if (args->team_id <= 0 || args->path == NULL)
 		return (fprintf(stderr, "%s\n", ERROR_MESSAGE) * 0 + 84);
@@ -81,13 +65,12 @@ static int parse_args(int argc, char **argv, args_t *args)
 static void free_args(args_t *args)
 {
 	free(args->path);
-	free(args->graphical_lib_path);
 	free(args->team_name);
 }
 
 int main(int argc, char **argv)
 {
-	args_t args = {NULL, -1, NULL, 0, NULL};
+	args_t args = {NULL, -1, NULL, 0};
 	int ret = 84;
 
 	if (argc >= 3) {

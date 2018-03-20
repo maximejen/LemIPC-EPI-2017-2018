@@ -8,19 +8,23 @@
 #ifndef LEMIPC_LEMIPC_H
 	#define LEMIPC_LEMIPC_H
 
-	#define HEIGHT 30
-	#define WIDTH 30
+	#define WIDTH 46
+	#define HEIGHT 46
+	#define WIN_WIDTH 1280
+	#define WIN_HEIGHT 720
 	#define MSG_SIZE 32
 
 	#include <sys/ipc.h>
 	#include <pthread.h>
+	#include <SFML/Graphics.h>
+
+extern int CONTINUE;
 
 typedef struct args_s {
 	char *path;
 	int team_id;
 	char *team_name;
 	int is_graphical;
-	char *graphical_lib_path;
 } args_t;
 
 /*
@@ -70,12 +74,17 @@ void init_semaphores(lemipc_t *lem);
 void init_message_queue(lemipc_t *lem);
 
 /*
-** Render Functions
+** Textual Render Functions
 */
 void *textual_render(void *arg);
 void print_map(lemipc_t *lem, int back);
 
+/*
+** Graphical Render Functions
+*/
 void *graphical_render(void *arg);
+sfRenderWindow *open_window(const char *);
+int is_esc_pressed(sfEvent *event);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);

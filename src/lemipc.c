@@ -9,7 +9,10 @@
 #include <sys/ipc.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <signal.h>
 #include "../include/lemipc.h"
+
+int CONTINUE = 1;
 
 /*
 ** Description:
@@ -63,6 +66,12 @@ static int lemipc_init(args_t *args, lemipc_t *lem)
 	return (0);
 }
 
+static void sig_int_handle(int sig)
+{
+	(void)sig;
+	CONTINUE = 0;
+}
+
 /*
 ** Description:
 ** This function should create the map and then init the shared memory.
@@ -77,6 +86,7 @@ int lemipc_start(args_t *args)
 	if (lemipc_init(args, &lem) != 0)
 		return (1);
 	create_threads(&lem);
+	signal(SIGINT, sig_int_handle);
 	join_threads(&lem);
 	return (0);
 }
