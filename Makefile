@@ -11,14 +11,17 @@ RM	=	rm -f
 
 NAME	=	lemipc
 
-SRC	=	main.c				\
-		lemipc.c
+SRC	=	src/main.c				\
+		src/lemipc.c            		\
+		src/initipc.c				\
+		src/render/text/render.c		\
+		src/render/graphical/render.c
 
 OBJ	=	$(SRC:.c=.o)
 
 CFLAGS	=	-I include -W -Wall -Wextra -g
 
-LDFLAGS	=
+LDFLAGS	=	-lpthread -ldl
 
 all: $(NAME)
 

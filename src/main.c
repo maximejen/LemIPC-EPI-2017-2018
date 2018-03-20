@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
-#include "include/lemipc.h"
+#include "../include/lemipc.h"
 
 static const char FLAGS[5][12] = {
 "-tn",
@@ -35,6 +35,20 @@ static void fill_string(char **str, const char *to_copy)
 	*str = strdup(to_copy);
 }
 
+static int graph_is_valid(char *str, args_t *args)
+{
+	struct stat buf;
+
+	if (stat(str, &buf) != -1) {
+		if (buf.st_mode != S_IFDIR) {
+			fill_string(&args->graphical_lib_path, str);
+			args->is_graphical = 1;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 /*
 ** Description:
 **  This function parse the arguments sent by the user when exec the program
@@ -56,8 +70,7 @@ static int parse_args(int argc, char **argv, args_t *args)
 		else if ((strcmp(argv[i], FLAGS[3]) == 0 ||
 		strcmp(argv[i], FLAGS[4]) == 0) && (i + 1) < argc) {
 			i++;
-			fill_string(&args->graphical_lib_path, argv[i]);
-			args->is_graphical = 1;
+			graph_is_valid(argv[i], args);
 		}
 	}
 	if (args->team_id <= 0 || args->path == NULL)
@@ -79,9 +92,8 @@ int main(int argc, char **argv)
 
 	if (argc >= 3) {
 		ret = parse_args(argc, argv, &args);
-		if (ret != 84) {
-			lemipc_init(&args);
-		}
+		if (ret != 84)
+			lemipc_start(&args);
 		free_args(&args);
 		return (ret);
 	}

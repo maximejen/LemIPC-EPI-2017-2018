@@ -1,5 +1,5 @@
 PROJECT(lemIPC)
 
-set(sources main.c include/lemipc.h lemipc.c)
+set(sources src/main.c include/lemipc.h src/lemipc.c src/initipc.c src/render/text/render.c src/render/graphical/render.c)
 
 add_executable(lemipc ${sources})
