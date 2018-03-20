@@ -17,6 +17,7 @@ SRC	=	src/main.c					\
 		src/render/text/render.c			\
 		src/render/graphical/render.c			\
 		src/render/graphical/graph_functions.c		\
+		src/render/graphical/print_map.c		\
 		src/render/color/handle_color_list.c		\
 		src/render/color/color_generator.c
 

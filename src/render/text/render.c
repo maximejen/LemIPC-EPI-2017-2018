@@ -53,7 +53,7 @@ static void print_line(size_t width)
 	}
 }
 
-void print_map(lemipc_t *lem, int back)
+void print_map_text(lemipc_t *lem, int back)
 {
 	size_t height = lem->mem->height;
 	size_t width = lem->mem->width;
@@ -64,8 +64,7 @@ void print_map(lemipc_t *lem, int back)
 	for (size_t i = 0 ; i < height ; i++) {
 		write(1, chars[5], 3);
 		for (size_t j = 0 ; j < width ; j++) {
-//			print_char(lem->mem->map[i][j]);
-			print_char(i + j * WIDTH);
+			print_char(lem->mem->map[i][j]);
 		}
 		printf("%s\n", chars[5]);
 	}
@@ -90,9 +89,10 @@ void *textual_render(void *arg)
 	printf("\e[?25l");
 	fflush(stdout);
 	while (CONTINUE) {
-		print_map(lem, 1);
+		print_map_text(lem, 1);
 	}
-	print_map(lem, 0);
+	print_map_text(lem, 0);
+	reset_colors();
 	printf("\e[?25h");
 	fflush(stdout);
 	return ("OK");

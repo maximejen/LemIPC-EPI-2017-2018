@@ -18,6 +18,7 @@ int add_color_to_list(color_t *color)
 	if (!element)
 		return (-1);
 	element->color = color;
+	element->next = NULL;
 	if (tmp == NULL) {
 		LIST = element;
 		return (0);

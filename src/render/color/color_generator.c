@@ -26,11 +26,19 @@ color_t *generate_color(unsigned int key)
 {
 	color_t *color = malloc(sizeof(color_t));
 
-	srandom(key);
-	color->key = key;
-	color->r = (int)(random() % 256);
-	color->g = (int)(random() % 256);
-	color->b = (int)(random() % 256);
+	if (key) {
+		srandom(key);
+		color->key = key;
+		color->r = (int)(random() % 256);
+		color->g = (int)(random() % 256);
+		color->b = (int)(random() % 256);
+	}
+	else {
+		color->key = key;
+		color->r = 0;
+		color->g = 0;
+		color->b = 0;
+	}
 	return (color);
 }
 
@@ -45,7 +53,7 @@ color_t *get_color(unsigned int key)
 	return (color);
 }
 
-void reset_colors()
+void reset_colors(void)
 {
 	while (LIST) {
 		remove_from_list(LIST);

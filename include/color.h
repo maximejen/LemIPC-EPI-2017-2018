@@ -25,7 +25,7 @@ typedef struct color_list_s {
 extern color_list_t *LIST;
 
 color_t *get_color(unsigned int key);
-void reset_colors();
+void reset_colors(void);
 int add_color_to_list(color_t *color);
 void remove_from_list(color_list_t *element);
 

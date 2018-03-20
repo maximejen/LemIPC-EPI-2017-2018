@@ -46,9 +46,11 @@ static int join_threads(lemipc_t *lem)
 {
 	void *status;
 
-	if (lem->graph_thread && pthread_join(lem->graph_thread, &status))
-		perror("pthread_join");
-	printf("Graphical thread joined, the game is finished\n");
+	if (lem->is_first) {
+		if (lem->graph_thread && pthread_join(lem->graph_thread, &status))
+			perror("pthread_join");
+		printf("Graphical thread joined, the game is finished\n");
+	}
 	// Todo : HERE JOIN THE COMMANDER IF NEEDED
 	return (0);
 }

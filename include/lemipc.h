@@ -10,13 +10,14 @@
 
 	#define WIDTH 46
 	#define HEIGHT 46
-	#define WIN_WIDTH 1280
+	#define WIN_WIDTH 720
 	#define WIN_HEIGHT 720
 	#define MSG_SIZE 32
 
 	#include <sys/ipc.h>
 	#include <pthread.h>
 	#include <SFML/Graphics.h>
+#include "color.h"
 
 extern int CONTINUE;
 
@@ -77,7 +78,7 @@ void init_message_queue(lemipc_t *lem);
 ** Textual Render Functions
 */
 void *textual_render(void *arg);
-void print_map(lemipc_t *lem, int back);
+void print_map_text(lemipc_t *lem, int back);
 
 /*
 ** Graphical Render Functions
@@ -85,6 +86,12 @@ void print_map(lemipc_t *lem, int back);
 void *graphical_render(void *arg);
 sfRenderWindow *open_window(const char *);
 int is_esc_pressed(sfEvent *event);
+sfColor transform_color(color_t *color);
+sfVector2f crvec(float x, float y);
+size_t get_cell_size(size_t width, size_t height);
+void print_map_graph(lemipc_t *lem, sfRenderWindow *window);
+void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
+		    sfVector2f position, sfColor color);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);
