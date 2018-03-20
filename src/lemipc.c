@@ -55,6 +55,10 @@ static int join_threads(lemipc_t *lem)
 	return (0);
 }
 
+/*
+** Description:
+** initialize of the IPCs or just link to them.
+*/
 static int lemipc_init(args_t *args, lemipc_t *lem)
 {
 	lem->key = ftok(args->path, 0);
@@ -68,6 +72,10 @@ static int lemipc_init(args_t *args, lemipc_t *lem)
 	return (0);
 }
 
+/*
+** Description:
+** if a sigint is catched, this function is called.
+*/
 static void sig_int_handle(int sig)
 {
 	(void)sig;

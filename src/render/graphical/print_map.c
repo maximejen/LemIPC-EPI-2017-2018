@@ -10,6 +10,27 @@
 #include "../../../include/color.h"
 #include "../../../include/lemipc.h"
 
+/*
+** Description:
+** Calculate the size of a "cell" in the window
+*/
+size_t get_cell_size(size_t width, size_t height)
+{
+	int is_height_smaller = height < width;
+	size_t size;
+
+	if (is_height_smaller) {
+		size = WIN_WIDTH / width;
+	} else {
+		size = WIN_HEIGHT / height;
+	}
+	return (size);
+}
+
+/*
+** Description:
+** print a line of of the map in the window
+*/
 void print_line_graph(lemipc_t *lem, size_t i, sfRenderWindow *window)
 {
 	sfRectangleShape *cell = sfRectangleShape_create();
@@ -28,6 +49,10 @@ void print_line_graph(lemipc_t *lem, size_t i, sfRenderWindow *window)
 
 }
 
+/*
+** Description:
+** Print the map that is in the shared_memory in the window
+*/
 void print_map_graph(lemipc_t *lem, sfRenderWindow *window)
 {
 	sfRectangleShape *cell = sfRectangleShape_create();

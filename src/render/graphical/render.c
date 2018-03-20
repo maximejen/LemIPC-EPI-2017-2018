@@ -14,19 +14,6 @@
 static const char *WELCOME_MESSAGE = "You just entered the graphical"
 	" thread...\nEnjoy your experience\n\n";
 
-size_t get_cell_size(size_t width, size_t height)
-{
-	int is_height_smaller = height < width;
-	size_t size;
-
-	if (is_height_smaller) {
-		size = WIN_WIDTH / width;
-	} else {
-		size = WIN_HEIGHT / height;
-	}
-	return (size);
-}
-
 static void draw_window(sfRenderWindow *window, lemipc_t *lem)
 {
 	sfEvent e;
@@ -41,22 +28,15 @@ static void draw_window(sfRenderWindow *window, lemipc_t *lem)
 	sfRenderWindow_display(window);
 }
 
-static void render_map(lemipc_t *lem)
+void *graphical_render(void *arg)
 {
 	sfRenderWindow *window = open_window("LemIPC");
+	lemipc_t *lem = arg;
 
+	printf("%s", WELCOME_MESSAGE);
 	while (sfRenderWindow_isOpen(window) && CONTINUE) {
 		draw_window(window, lem);
 	}
 	sfRenderWindow_destroy(window);
-}
-
-void *graphical_render(void *arg)
-{
-	lemipc_t *lem = arg;
-
-	printf("%s", WELCOME_MESSAGE);
-	// Todo : Here, launch the graphical render.
-	render_map(lem);
 	return ("OK");
 }

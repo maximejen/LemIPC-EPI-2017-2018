@@ -53,6 +53,10 @@ static void print_line(size_t width)
 	}
 }
 
+/*
+** Description:
+** print the map in the shared_memory in the standard output.
+*/
 void print_map_text(lemipc_t *lem, int back)
 {
 	size_t height = lem->mem->height;
