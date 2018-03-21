@@ -97,6 +97,7 @@ int lemipc_start(args_t *args)
 		return (1);
 	create_threads(&lem);
 	signal(SIGINT, sig_int_handle);
+	start_player(&lem);
 	join_threads(&lem);
 	return (0);
 }

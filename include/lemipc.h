@@ -8,8 +8,8 @@
 #ifndef LEMIPC_LEMIPC_H
 	#define LEMIPC_LEMIPC_H
 
-	#define WIDTH 60
-	#define HEIGHT 60
+	#define WIDTH 46
+	#define HEIGHT 46
 	#define WIN_WIDTH 800
 	#define WIN_HEIGHT 800
 	#define MSG_SIZE 32
@@ -61,6 +61,16 @@ typedef struct lemipc_s {
 	pthread_t graph_thread;
 } lemipc_t;
 
+typedef struct player_s {
+	sh_mem_t *mem;
+	int shm_id;
+	int sem_id;
+	int msg_id;
+	int posx;
+	int posy;
+	int team_id;
+} player_t;
+
 typedef struct graph_print_s {
 
 } graph_print_t;
@@ -93,6 +103,20 @@ void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
 	sfVector2f *win_size);
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 		    sfVector2f position, sfColor color);
+
+/*
+** Player Functions
+*/
+int start_player(lemipc_t *lem);
+int init_player(lemipc_t *lem, player_t *player);
+int determine_starting_position(player_t *player);
+void get_nearby_cells(int *nearby, player_t *player);
+
+/*
+** Utility Functions
+*/
+int rand_nbr(size_t max);
+int is_in_range(int x, int y, size_t w, size_t h);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);
