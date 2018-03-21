@@ -8,16 +8,16 @@
 #ifndef LEMIPC_LEMIPC_H
 	#define LEMIPC_LEMIPC_H
 
-	#define WIDTH 46
-	#define HEIGHT 46
-	#define WIN_WIDTH 720
-	#define WIN_HEIGHT 720
+	#define WIDTH 60
+	#define HEIGHT 60
+	#define WIN_WIDTH 800
+	#define WIN_HEIGHT 800
 	#define MSG_SIZE 32
 
 	#include <sys/ipc.h>
 	#include <pthread.h>
 	#include <SFML/Graphics.h>
-#include "color.h"
+	#include "color.h"
 
 extern int CONTINUE;
 
@@ -84,12 +84,13 @@ void print_map_text(lemipc_t *lem, int back);
 ** Graphical Render Functions
 */
 void *graphical_render(void *arg);
-sfRenderWindow *open_window(const char *);
+sfRenderWindow *open_window(const char *, size_t, size_t);
 int is_esc_pressed(sfEvent *event);
 sfColor transform_color(color_t *color);
 sfVector2f crvec(float x, float y);
-size_t get_cell_size(size_t width, size_t height);
-void print_map_graph(lemipc_t *lem, sfRenderWindow *window);
+size_t get_cell_size(size_t width, size_t height, float, float);
+void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
+	sfVector2f *win_size);
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 		    sfVector2f position, sfColor color);
 

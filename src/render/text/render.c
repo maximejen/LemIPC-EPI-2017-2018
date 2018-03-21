@@ -26,12 +26,8 @@ static const char *WELCOME_MESSAGE = "You just entered the textual printing"
 static void print_char(int team_id)
 {
 	color_t *color = get_color((unsigned int)team_id);
-
-	if (team_id)
-		printf("\e[48;5;%d;%d;%dm  \e[0m",
-		       color->r, color->g, color->b);
-	else
-		printf("\e[0m  ");
+	printf("\e[48;5;%d;%d;%dm  \e[0m",
+	       color->r, color->g, color->b);
 	fflush(stdout);
 }
 

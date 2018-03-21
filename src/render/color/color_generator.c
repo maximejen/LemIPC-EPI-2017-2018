@@ -58,5 +58,7 @@ void reset_colors(void)
 	while (LIST) {
 		remove_from_list(LIST);
 	}
+	free(LIST);
+	LIST = NULL;
 }
 

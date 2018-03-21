@@ -29,6 +29,12 @@ static const char *HELP_MESSAGE =
 "\tPATH\t\tnumber of philosophers\n"
 "\tTEAM_NUMBER\tteam number of the current champion (greater than 0)";
 
+static void fill_string(char **str, const char *to_copy)
+{
+	free(*str);
+	*str = strdup(to_copy);
+}
+
 /*
 ** Description:
 **  This function parse the arguments sent by the user when exec the program
@@ -42,10 +48,10 @@ static int parse_args(int argc, char **argv, args_t *args)
 		if (argv[i][0] >= '0' && argv[i][0] <= '9')
 			args->team_id = atoi(argv[i]);
 		if (stat(argv[i], &buf) != -1)
-			strcpy(args->path, argv[i]);
+			fill_string(&args->path, argv[i]);
 		if (strcmp(argv[i], FLAGS[0]) == 0 && (i + 1) < argc) {
 			i++;
-			strcpy(args->team_name, argv[i]);
+			fill_string(&args->team_name, argv[i]);
 		}
 		else if ((strcmp(argv[i], FLAGS[3]) == 0 ||
 		strcmp(argv[i], FLAGS[4]) == 0))

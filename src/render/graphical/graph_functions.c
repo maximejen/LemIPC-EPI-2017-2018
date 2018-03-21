@@ -10,14 +10,14 @@
 #include "../../../include/lemipc.h"
 #include "../../../include/color.h"
 
-sfRenderWindow *open_window(const char *title)
+sfRenderWindow *open_window(const char *title, size_t width, size_t height)
 {
 	sfVideoMode mode;
 	sfRenderWindow *window;
 
 	mode.bitsPerPixel = 32;
-	mode.width = WIN_WIDTH;
-	mode.height = WIN_HEIGHT;
+	mode.width = (unsigned int) width;
+	mode.height = (unsigned int) height;
 	window = sfRenderWindow_create(mode, title, sfClose | sfResize, NULL);
 	sfRenderWindow_setMouseCursorVisible(window, sfFalse);
 	return (window);

@@ -36,6 +36,7 @@ void remove_from_list(color_list_t *element)
 
 	if (element == LIST) {
 		LIST = element->next;
+		free(element->color);
 		free(element);
 		tmp = NULL;
 	}
