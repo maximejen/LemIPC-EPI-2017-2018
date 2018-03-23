@@ -28,22 +28,39 @@ static void draw_window(sfRenderWindow *window, lemipc_t *lem,
 	sfRenderWindow_display(window);
 }
 
+static void render_window(sfRenderWindow *window, lemipc_t *lem,
+	sfVector2f *win_size)
+{
+	char *msg = NULL;
+	char *interp_msg = NULL;
+
+	while (sfRenderWindow_isOpen(window) && CONTINUE) {
+		receive_message(lem->msg_id, 1, &msg, IPC_NOWAIT);
+		if (msg != NULL) {
+			interp_msg = interpret_message(msg);
+			printf("%s\n", interp_msg);
+			free(msg);
+			free(interp_msg);
+			msg = NULL;
+		}
+		draw_window(window, lem, win_size);
+	}
+}
+
 void *graphical_render(void *arg)
 {
 	lemipc_t *lem = arg;
 	sfVector2f win_size;
-	size_t size = get_cell_size(lem->mem->width, lem->mem->height,
-				    WIN_WIDTH, WIN_HEIGHT);
-	sfRenderWindow *window = open_window("LemIPC",
-					     size * (lem->mem->width + 2),
-					     size * (lem->mem->height + 2));
+	size_t width = lem->mem->width;
+	size_t height = lem->mem->height;
+	size_t cell_size = get_cell_size(width, height, WIN_WIDTH, WIN_HEIGHT);
+	sfRenderWindow *window = open_window("LemIPC", cell_size * (width + 2),
+					     cell_size * (height + 2));
 
-	win_size.x = size * (lem->mem->width + 2);
-	win_size.y = size * (lem->mem->height + 2);
+	win_size.x = cell_size * (width + 2);
+	win_size.y = cell_size * (height + 2);
 	printf("%s", WELCOME_MESSAGE);
-	while (sfRenderWindow_isOpen(window) && CONTINUE) {
-		draw_window(window, lem, &win_size);
-	}
+	render_window(window, lem, &win_size);
 	sfRenderWindow_destroy(window);
 	kill(0, SIGINT);
 	return ("OK");

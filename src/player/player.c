@@ -19,6 +19,8 @@ static const char *ERROR_MSG = "Error : can't find a positon for the player";
 */
 int init_player(lemipc_t *lem, player_t *player)
 {
+	char *str;
+
 	player->mem = lem->mem;
 	player->shm_id = lem->shm_id;
 	player->sem_id = lem->sem_id;
@@ -27,7 +29,10 @@ int init_player(lemipc_t *lem, player_t *player)
 	if (determine_starting_position(player))
 		return (dprintf(2, "%s", ERROR_MSG) * 0 + 1);
 	player->mem->map[player->posy][player->posx] = player->team_id;
-	// Todo : Send a message to say that you are connected
+	asprintf(&str, "1;%d;1", player->team_id);
+	send_message(player->msg_id, LOG_CHANNEL, str);
+	send_message(player->msg_id, player->team_id + 1, str);
+	free(str);
 	return (0);
 }
 
@@ -78,6 +83,7 @@ void move_random(player_t *player)
 int start_player(lemipc_t *lem)
 {
 	player_t player;
+	char *str = NULL;
 
 	if (init_player(lem, &player))
 		return (1);
@@ -89,5 +95,9 @@ int start_player(lemipc_t *lem)
 		move_random(&player);
 	}
 	player.mem->map[player.posy][player.posx] = 0;
+	asprintf(&str, "1;%d;2", player.team_id);
+	send_message(player.msg_id, LOG_CHANNEL, str);
+	send_message(player.msg_id, player.team_id + 1, str);
+	free(str);
 	return (0);
 }

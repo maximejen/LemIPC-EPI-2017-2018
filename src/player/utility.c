@@ -38,12 +38,16 @@ int determine_starting_position(player_t *player)
 	int fd = open("/dev/urandom", O_RDONLY);
 	int x;
 	int y;
+	int max_try = 15;
 
 	if (fd != -1) {
 		do {
 			x = rand_nbr(player->mem->width);
 			y = rand_nbr(player->mem->height);
-		} while (player->mem->map[y][x] != 0);
+			max_try--;
+		} while (player->mem->map[y][x] != 0 && max_try);
+		if (!max_try)
+			return (1);
 		player->posx = x;
 		player->posy = y;
 		close(fd);
@@ -90,14 +94,4 @@ void get_nearby_cells(int *nearby, player_t *p)
 	nearby[6] = is_in_range(x, y + 1, w, h) ? p->mem->map[y + 1][x] : -1;
 	nearby[7] = is_in_range(x + 1, y + 1, w, h) ? p->mem->map[y + 1][x + 1]
 						    : -1;
-}
-
-void operate_on_sem(int sem_id, short op)
-{
-	struct sembuf sops;
-
-	sops.sem_num = 0;
-	sops.sem_flg = 0;
-	sops.sem_op = op;
-	semop(sem_id, &sops, 1);
 }

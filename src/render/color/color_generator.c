@@ -26,6 +26,8 @@ color_t *generate_color(unsigned int key)
 {
 	color_t *color = malloc(sizeof(color_t));
 
+	if (!color)
+		return (NULL);
 	if (key) {
 		srandom(key);
 		color->key = key;
@@ -48,6 +50,8 @@ color_t *get_color(unsigned int key)
 
 	if (!color) {
 		color = generate_color(key);
+		if (!color)
+			return (NULL);
 		add_color_to_list(color);
 	}
 	return (color);

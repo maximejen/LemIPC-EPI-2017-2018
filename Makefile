@@ -14,6 +14,7 @@ NAME	=	lemipc
 SRC	=	src/main.c					\
 		src/lemipc.c            			\
 		src/initipc.c					\
+		src/utility.c					\
 		src/render/text/render.c			\
 		src/render/graphical/render.c			\
 		src/render/graphical/graph_functions.c		\
@@ -22,7 +23,9 @@ SRC	=	src/main.c					\
 		src/render/color/color_generator.c		\
 		src/player/utility.c				\
 		src/player/player_move.c			\
-		src/player/player.c
+		src/player/player.c				\
+		src/messages/handle.c				\
+		src/messages/my_str_to_wordtab.c
 
 OBJ	=	$(SRC:.c=.o)
 

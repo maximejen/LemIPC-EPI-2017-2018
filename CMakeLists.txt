@@ -14,6 +14,6 @@ set(sources
     include/color.h
     src/render/color/handle_color_list.c
     src/render/graphical/print_map.c
-        src/player/player.c src/player/utility.c src/player/player_move.c)
+        src/player/player.c src/player/utility.c src/player/player_move.c src/utility.c src/messages/handle.c src/messages/my_str_to_wordtab.c)
 
 add_executable(lemipc ${sources})

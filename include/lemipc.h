@@ -8,11 +8,13 @@
 #ifndef LEMIPC_LEMIPC_H
 	#define LEMIPC_LEMIPC_H
 
-	#define WIDTH 70
-	#define HEIGHT 70
+	#define WIDTH 46
+	#define HEIGHT 46
 	#define WIN_WIDTH 800
 	#define WIN_HEIGHT 800
 	#define MSG_SIZE 32
+
+	#define LOG_CHANNEL 1
 
 	#include <sys/ipc.h>
 	#include <pthread.h>
@@ -42,7 +44,7 @@ typedef struct shared_mem_s {
 
 typedef struct msg_s {
 	long mtype;
-	char data[MSG_SIZE];
+	char mtext[MSG_SIZE];
 } msg_t;
 
 /*
@@ -122,6 +124,14 @@ void move_bot(player_t *player);
 int rand_nbr(size_t max);
 int is_in_range(int x, int y, size_t w, size_t h);
 void operate_on_sem(int sem_id, short op);
+int send_message(int msg_q, int channel, char *content);
+int receive_message(int msg_q, int channel, char **content, int flags);
+char **my_str_to_wordtab(const char *str, char c);
+
+/*
+** Message Functions
+*/
+char *interpret_message(const char *content);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);

@@ -98,8 +98,8 @@ int lemipc_start(args_t *args)
 
 	if (lemipc_init(args, &lem) != 0)
 		return (1);
-	create_threads(&lem);
 	signal(SIGINT, sig_int_handle);
+	create_threads(&lem);
 	start_player(&lem);
 	join_threads(&lem);
 	if (lem.is_first) {
