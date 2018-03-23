@@ -43,8 +43,7 @@ void print_line_graph(lemipc_t *lem, size_t i, sfRenderWindow *window,
 
 	sfRectangleShape_setSize(cell, crvec(size, size));
 	for (size_t j = 0 ; j < width ; j++) {
-//		color = get_color((unsigned int) lem->mem->map[i][j]);
-		color = get_color(j + i * width);
+		color = get_color((unsigned int) lem->mem->map[i][j]);
 		draw_rectangle(cell, window,
 			       crvec((j + 1) * size, (i + 1) * size),
 			       transform_color(color));

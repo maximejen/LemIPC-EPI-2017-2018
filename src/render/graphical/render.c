@@ -6,8 +6,7 @@
 */
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <dlfcn.h>
+#include <signal.h>
 #include <SFML/Graphics/Types.h>
 #include "../../../include/lemipc.h"
 
@@ -46,5 +45,6 @@ void *graphical_render(void *arg)
 		draw_window(window, lem, &win_size);
 	}
 	sfRenderWindow_destroy(window);
+	kill(0, SIGINT);
 	return ("OK");
 }

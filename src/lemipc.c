@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <signal.h>
+#include <sys/msg.h>
+#include <sys/sem.h>
+#include <sys/shm.h>
 #include "../include/lemipc.h"
 
 int CONTINUE = 1;
@@ -99,6 +102,12 @@ int lemipc_start(args_t *args)
 	signal(SIGINT, sig_int_handle);
 	start_player(&lem);
 	join_threads(&lem);
+	if (lem.is_first) {
+		shmctl(lem.shm_id, IPC_RMID, NULL);
+		semctl(lem.sem_id, 0, IPC_RMID);
+		semctl(lem.sem_id, 1, IPC_RMID);
+		msgctl(lem.msg_id, IPC_RMID, NULL);
+	}
 	return (0);
 }
 

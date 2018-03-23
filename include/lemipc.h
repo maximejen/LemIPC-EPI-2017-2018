@@ -110,13 +110,18 @@ void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 int start_player(lemipc_t *lem);
 int init_player(lemipc_t *lem, player_t *player);
 int determine_starting_position(player_t *player);
-void get_nearby_cells(int *nearby, player_t *player);
+void get_nearby_cells(int *nearby, player_t *p);
+void move_right(player_t *player);
+void move_left(player_t *player);
+void move_top(player_t *player);
+void move_bot(player_t *player);
 
 /*
 ** Utility Functions
 */
 int rand_nbr(size_t max);
 int is_in_range(int x, int y, size_t w, size_t h);
+void operate_on_sem(int sem_id, short op);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);

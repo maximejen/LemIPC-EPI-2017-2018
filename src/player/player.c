@@ -6,6 +6,8 @@
 */
 
 #include <stdio.h>
+#include <sys/sem.h>
+#include <zconf.h>
 #include "../../include/lemipc.h"
 
 static const char *ERROR_MSG = "Error : can't find a positon for the player";
@@ -23,6 +25,8 @@ int init_player(lemipc_t *lem, player_t *player)
 	player->team_id = lem->args->team_id;
 	if (determine_starting_position(player))
 		return (dprintf(2, "%s", ERROR_MSG) * 0 + 1);
+	player->mem->map[player->posy][player->posx] = player->team_id;
+	// Todo : Send a message to say that you are connected
 	return (0);
 }
 
@@ -48,14 +52,40 @@ int should_player_die(player_t *player)
 	return (0);
 }
 
+void move_random(player_t *player)
+{
+	int direction = rand_nbr(4);
+
+	operate_on_sem(player->sem_id, -1);
+	switch (direction) {
+		case 0:
+		move_right(player);
+			break;
+		case 1:
+		move_left(player);
+			break;
+		case 2:
+		move_bot(player);
+			break;
+		default:
+		move_top(player);
+			break;
+	}
+	operate_on_sem(player->sem_id, 1);
+}
+
 int start_player(lemipc_t *lem)
 {
 	player_t player;
 
 	if (init_player(lem, &player))
 		return (1);
-	while (!should_player_die(&player)) {
-
+	while (!should_player_die(&player) && CONTINUE && player.mem != NULL) {
+		// Todo : Check the commander is still alive
+		// Todo : Get the instructions of the commander
+		usleep(100000);
+		move_random(&player);
 	}
-	return (1);
+	player.mem->map[player.posy][player.posx] = 0;
+	return (0);
 }

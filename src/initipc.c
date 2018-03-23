@@ -7,8 +7,6 @@
 
 #include <sys/types.h>
 #include <sys/ipc.h>
-#include <stdio.h>
-#include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
 #include <sys/msg.h>
@@ -37,7 +35,6 @@ void init_shared_memory(lemipc_t *lem)
 	}
 	else
 		lem->mem = shmat(lem->shm_id, NULL, SHM_R | SHM_W);
-	shmctl(lem->shm_id, IPC_RMID, NULL);
 }
 
 /*
@@ -55,8 +52,6 @@ void init_semaphores(lemipc_t *lem)
 			semctl(lem->sem_id, 1, SETVAL, 1); // set sem 1 (commander)
 		}
 	}
-//	semctl(lem->sem_id, 0, IPC_RMID);
-//	semctl(lem->sem_id, 1, IPC_RMID);
 }
 
 void init_message_queue(lemipc_t *lem)
@@ -65,5 +60,4 @@ void init_message_queue(lemipc_t *lem)
 	if (lem->msg_id == -1) {
 		lem->msg_id = msgget(lem->key, IPC_CREAT | SHM_W | SHM_R);
 	}
-//	msgctl(lem->msg_id, IPC_RMID, NULL);
 }

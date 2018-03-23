@@ -21,6 +21,7 @@ SRC	=	src/main.c					\
 		src/render/color/handle_color_list.c		\
 		src/render/color/color_generator.c		\
 		src/player/utility.c				\
+		src/player/player_move.c			\
 		src/player/player.c
 
 OBJ	=	$(SRC:.c=.o)
