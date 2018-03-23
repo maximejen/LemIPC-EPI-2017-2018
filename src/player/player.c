@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <sys/sem.h>
 #include <zconf.h>
+#include <sys/shm.h>
 #include "../../include/lemipc.h"
 
 static const char *ERROR_MSG = "Error : can't find a positon for the player";
@@ -80,7 +81,8 @@ int start_player(lemipc_t *lem)
 
 	if (init_player(lem, &player))
 		return (1);
-	while (!should_player_die(&player) && CONTINUE && player.mem != NULL) {
+	while (!should_player_die(&player) && CONTINUE &&
+		shmget(lem->key, sizeof(sh_mem_t), SHM_R) != -1) {
 		// Todo : Check the commander is still alive
 		// Todo : Get the instructions of the commander
 		usleep(100000);
