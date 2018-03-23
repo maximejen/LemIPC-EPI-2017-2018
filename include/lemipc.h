@@ -8,8 +8,8 @@
 #ifndef LEMIPC_LEMIPC_H
 	#define LEMIPC_LEMIPC_H
 
-	#define WIDTH 46
-	#define HEIGHT 46
+	#define WIDTH 70
+	#define HEIGHT 70
 	#define WIN_WIDTH 800
 	#define WIN_HEIGHT 800
 	#define MSG_SIZE 32

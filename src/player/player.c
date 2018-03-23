@@ -59,18 +59,18 @@ void move_random(player_t *player)
 
 	operate_on_sem(player->sem_id, -1);
 	switch (direction) {
-		case 0:
+	case 0:
 		move_right(player);
-			break;
-		case 1:
+		break;
+	case 1:
 		move_left(player);
-			break;
-		case 2:
+		break;
+	case 2:
 		move_bot(player);
-			break;
-		default:
+		break;
+	default:
 		move_top(player);
-			break;
+		break;
 	}
 	operate_on_sem(player->sem_id, 1);
 }
@@ -85,7 +85,7 @@ int start_player(lemipc_t *lem)
 		shmget(lem->key, sizeof(sh_mem_t), SHM_R) != -1) {
 		// Todo : Check the commander is still alive
 		// Todo : Get the instructions of the commander
-		usleep(100000);
+		usleep(70000);
 		move_random(&player);
 	}
 	player.mem->map[player.posy][player.posx] = 0;
