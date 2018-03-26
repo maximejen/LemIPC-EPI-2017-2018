@@ -20,14 +20,14 @@ static int find_in_line(tmp_data_t *s, int **tmp, int team_id)
 	while ((is_in_range(*s->x, *s->y, s->width, s->height) &&
 		(tmp[*s->y][*s->x] == 0 || tmp[*s->y][*s->x] == team_id)) ||
 	       i < s->size) {
+		*s->x += OPE_X[s->count % 4];
+		*s->y += OPE_Y[s->count % 4];
 		if (is_in_range(*s->x, *s->y, s->width, s->height) &&
 		    tmp[*s->y][*s->x] != 0 && tmp[*s->y][*s->x] != team_id)
 			return (1);
 		if (is_in_range(*s->x, *s->y, s->width, s->height))
 			tmp[*s->y][*s->x] = -1;
 		i++;
-		*s->x += OPE_X[s->count % 4];
-		*s->y += OPE_Y[s->count % 4];
 	}
 	return (0);
 }
@@ -78,6 +78,27 @@ static void free_tmp(int **tmp, size_t height)
 	tmp = NULL;
 }
 
+static int can_continue(int **tmp, tmp_data_t *s, commander_t *cmd)
+{
+	size_t w = cmd->mem->width;
+	size_t h = cmd->mem->height;
+	int ret = 1;
+
+	if (!CONTINUE || !tmp)
+		return (0);
+	if ((size_t)s->size >= w || (size_t)s->size >= h)
+		ret = 0;
+	for (size_t i = 0 ; !ret && i < h * w ; i++) {
+		if (tmp[i / h][i % w] != -1)
+			ret = 1;
+	}
+	if (ret && !(!is_in_range(*s->x, *s->y, s->width, s->height) ||
+			    tmp[*s->y][*s->x] == cmd->team_id ||
+			    tmp[*s->y][*s->x] <= 0))
+		ret = 0;
+	return (ret);
+}
+
 int find_target(commander_t *cmd)
 {
 	size_t width = cmd->mem->width;
@@ -85,8 +106,7 @@ int find_target(commander_t *cmd)
 	int **tmp = copy_tab(cmd->mem);
 	tmp_data_t s = {width, height, &cmd->target_x, &cmd->target_y, 0, 0};
 
-	while (tmp && (!is_in_range(*s.x, *s.y, width, height) ||
-	       tmp[*s.y][*s.x] == cmd->team_id || tmp[*s.y][*s.x] <= 0)) {
+	while (can_continue(tmp, &s, cmd)) {
 		if (find_in_line(&s, tmp, cmd->team_id) == 1) {
 			cmd->target_x = *s.x;
 			cmd->target_y = *s.y;

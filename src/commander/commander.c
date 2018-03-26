@@ -38,7 +38,7 @@ static void *start_commander(void *arg)
 	char *str;
 
 	init_commander(lem, &cmd);
-	find_target(&cmd);
+	printf("found a target ? %s\n", find_target(&cmd) ? "t" : "f");
 	while (CONTINUE) {
 
 	}
