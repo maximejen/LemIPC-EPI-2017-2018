@@ -6,8 +6,6 @@
 */
 
 #include <memory.h>
-#include <stdio.h>
-#include <zconf.h>
 #include "../../include/lemipc.h"
 
 static const int OPE_X[4] = {0, 1, 0, -1};
@@ -86,15 +84,15 @@ static int can_continue(int **tmp, tmp_data_t *s, commander_t *cmd)
 
 	if (!CONTINUE || !tmp)
 		return (0);
-	if ((size_t)s->size >= w || (size_t)s->size >= h)
+	if ((size_t) s->size >= w || (size_t) s->size >= h)
 		ret = 0;
 	for (size_t i = 0 ; !ret && i < h * w ; i++) {
 		if (tmp[i / h][i % w] != -1)
 			ret = 1;
 	}
 	if (ret && !(!is_in_range(*s->x, *s->y, s->width, s->height) ||
-			    tmp[*s->y][*s->x] == cmd->team_id ||
-			    tmp[*s->y][*s->x] <= 0))
+		     tmp[*s->y][*s->x] == cmd->team_id ||
+		     tmp[*s->y][*s->x] <= 0))
 		ret = 0;
 	return (ret);
 }

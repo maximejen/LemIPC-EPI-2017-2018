@@ -23,3 +23,15 @@ void operate_on_sem(int sem_id, short op)
 	sops.sem_op = op;
 	semop(sem_id, &sops, 1);
 }
+
+int should_i_be_commander(lemipc_t *lem)
+{
+	size_t w = lem->mem->width;
+	size_t h = lem->mem->height;
+
+	for (size_t i = 0 ; i < h * w ; i++) {
+		if (lem->mem->map[i / h][i % w] == lem->args->team_id)
+			return (0);
+	}
+	return (1);
+}

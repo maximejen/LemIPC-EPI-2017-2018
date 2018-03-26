@@ -40,7 +40,9 @@ static void *start_commander(void *arg)
 	init_commander(lem, &cmd);
 	printf("found a target ? %s\n", find_target(&cmd) ? "t" : "f");
 	while (CONTINUE) {
-
+		// Todo : Check the msg_q to find a player that connects
+		// Todo : find target.
+		// Todo : give to the team the order to kill the target.
 	}
 	asprintf(&str, "2;%d;2", cmd.team_id);
 	send_message(cmd.msg_id, LOG_CHANNEL, str);

@@ -12,22 +12,22 @@
 #include "../include/lemipc.h"
 
 static const char FLAGS[5][12] = {
-"-tn",
-"--help",
-"-h",
-"-g",
-"--graphical"
+	"-tn",
+	"--help",
+	"-h",
+	"-g",
+	"--graphical"
 };
 
 static const char *ERROR_MESSAGE = "Error : The team_id should be greater"
-" than 0 and you should also precise a path.";
+	" than 0 and you should also precise a path.";
 
 static const char *HELP_MESSAGE =
-"USAGE\n"
-"\t./lemipc PATH TEAM_NUMBER\n\n"
-"DESCRIPTION\n"
-"\tPATH\t\tnumber of philosophers\n"
-"\tTEAM_NUMBER\tteam number of the current champion (greater than 0)";
+	"USAGE\n"
+		"\t./lemipc PATH TEAM_NUMBER\n\n"
+		"DESCRIPTION\n"
+		"\tPATH\t\tnumber of philosophers\n"
+		"\tTEAM_NUMBER\tteam number of the current champion (greater than 0)";
 
 static void fill_string(char **str, const char *to_copy)
 {
@@ -52,9 +52,8 @@ static int parse_args(int argc, char **argv, args_t *args)
 		if (strcmp(argv[i], FLAGS[0]) == 0 && (i + 1) < argc) {
 			i++;
 			fill_string(&args->team_name, argv[i]);
-		}
-		else if ((strcmp(argv[i], FLAGS[3]) == 0 ||
-		strcmp(argv[i], FLAGS[4]) == 0))
+		} else if ((strcmp(argv[i], FLAGS[3]) == 0 ||
+			    strcmp(argv[i], FLAGS[4]) == 0))
 			args->is_graphical = 1;
 	}
 	if (args->team_id <= 0 || args->path == NULL)
@@ -70,7 +69,6 @@ static void finish_program(args_t *args)
 {
 	free(args->path);
 	free(args->team_name);
-	// Todo : Send a message to quit to all the processes if necessarry. Also clear all the IPCs
 }
 
 int main(int argc, char **argv)

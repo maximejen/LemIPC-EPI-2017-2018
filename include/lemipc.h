@@ -148,6 +148,7 @@ void operate_on_sem(int sem_id, short op);
 int send_message(int msg_q, int channel, char *content);
 int receive_message(int msg_q, int channel, char **content, int flags);
 char **my_str_to_wordtab(const char *str, char c);
+int should_i_be_commander(lemipc_t *lem);
 
 /*
 ** Message Functions
