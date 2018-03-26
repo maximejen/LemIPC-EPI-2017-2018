@@ -42,6 +42,15 @@ typedef struct shared_mem_s {
 	int map[HEIGHT][WIDTH];
 } sh_mem_t;
 
+typedef struct tmp_data_s {
+	size_t width;
+	size_t height;
+	int *x;
+	int *y;
+	int size;
+	int count;
+} tmp_data_t;
+
 typedef struct msg_s {
 	long mtype;
 	char mtext[MSG_SIZE];
@@ -58,9 +67,11 @@ typedef struct lemipc_s {
 	int sem_id;
 	int msg_id;
 	unsigned short is_first;
+	unsigned short is_commander;
 	key_t key;
 	args_t *args;
 	pthread_t graph_thread;
+	pthread_t cmd;
 } lemipc_t;
 
 typedef struct player_s {
@@ -72,6 +83,16 @@ typedef struct player_s {
 	int posy;
 	int team_id;
 } player_t;
+
+typedef struct commander_s {
+	sh_mem_t *mem;
+	int shm_id;
+	int sem_id;
+	int msg_id;
+	int target_x;
+	int target_y;
+	int team_id;
+} commander_t;
 
 typedef struct graph_print_s {
 
@@ -132,6 +153,12 @@ char **my_str_to_wordtab(const char *str, char c);
 ** Message Functions
 */
 char *interpret_message(const char *content);
+
+/*
+** Commander Functions
+*/
+int create_commander(lemipc_t *);
+int find_target(commander_t *cmd);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);

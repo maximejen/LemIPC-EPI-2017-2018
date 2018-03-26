@@ -29,15 +29,15 @@ static int create_threads(lemipc_t *lem)
 		if (lem->args->is_graphical) {
 			ret = pthread_create(&lem->graph_thread, NULL,
 					     &graphical_render, lem);
-		}
-		else {
+		} else {
 			ret = pthread_create(&lem->graph_thread, NULL,
 					     &textual_render, lem);
 		}
 		if (ret != 0)
 			perror("pthread_create");
 	}
-	// Todo : HERE CREATE THE COMMANDER IF NEEDED.
+	if (lem->is_commander)
+		create_commander(lem);
 	return (ret);
 }
 
@@ -50,11 +50,16 @@ static int join_threads(lemipc_t *lem)
 	void *status;
 
 	if (lem->is_first) {
-		if (lem->graph_thread && pthread_join(lem->graph_thread, &status))
+		if (lem->graph_thread &&
+		    pthread_join(lem->graph_thread, &status))
 			perror("pthread_join");
 		printf("Graphical thread joined, the game is finished\n");
 	}
-	// Todo : HERE JOIN THE COMMANDER IF NEEDED
+	if (lem->is_commander) {
+		if (lem->cmd && pthread_join(lem->cmd, &status))
+			perror("pthread_join");
+		printf("The Commander is dead, long live the Commander\n");
+	}
 	return (0);
 }
 
@@ -64,6 +69,8 @@ static int join_threads(lemipc_t *lem)
 */
 static int lemipc_init(args_t *args, lemipc_t *lem)
 {
+	lem->is_first = 0;
+	lem->is_commander = 0;
 	lem->key = ftok(args->path, 0);
 	lem->args = args;
 	if (args->team_name == NULL)
@@ -71,7 +78,6 @@ static int lemipc_init(args_t *args, lemipc_t *lem)
 	init_shared_memory(lem);
 	init_semaphores(lem);
 	init_message_queue(lem);
-	// Todo : HERE DETERMINE IF YOU NEED TO CREATE A COMMANDER.
 	return (0);
 }
 
@@ -81,7 +87,7 @@ static int lemipc_init(args_t *args, lemipc_t *lem)
 */
 static void sig_int_handle(int sig)
 {
-	(void)sig;
+	(void) sig;
 	CONTINUE = 0;
 }
 

@@ -24,6 +24,8 @@ SRC	=	src/main.c					\
 		src/player/utility.c				\
 		src/player/player_move.c			\
 		src/player/player.c				\
+		src/commander/commander.c			\
+		src/commander/snail_research.c			\
 		src/messages/handle.c				\
 		src/messages/my_str_to_wordtab.c
 

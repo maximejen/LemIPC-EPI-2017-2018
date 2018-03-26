@@ -11,7 +11,20 @@
 #include <sys/sem.h>
 #include <sys/msg.h>
 #include <memory.h>
+#include <stdio.h>
 #include "../include/lemipc.h"
+
+static int should_i_be_commander(lemipc_t *lem)
+{
+	size_t w = lem->mem->width;
+	size_t h = lem->mem->height;
+
+	for (size_t i = 0 ; i < h * w ; i++) {
+		if (lem->mem->map[i / h][i % w] == lem->args->team_id)
+			return (0);
+	}
+	return (1);
+}
 
 /*
 ** Description:
@@ -35,6 +48,8 @@ void init_shared_memory(lemipc_t *lem)
 	}
 	else
 		lem->mem = shmat(lem->shm_id, NULL, SHM_R | SHM_W);
+	if (should_i_be_commander(lem))
+		lem->is_commander = 1;
 }
 
 /*
