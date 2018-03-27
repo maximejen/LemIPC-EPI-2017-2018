@@ -29,7 +29,7 @@ static int count_players(commander_t *cmd)
 */
 static int init_commander(lemipc_t *lem, commander_t *commander)
 {
-	char *str;
+	char *str = NULL;
 
 	commander->mem = lem->mem;
 	commander->shm_id = lem->shm_id;
@@ -42,7 +42,6 @@ static int init_commander(lemipc_t *lem, commander_t *commander)
 	commander->game_started = 0;
 	asprintf(&str, "2;%d;1", commander->team_id);
 	send_message(commander->msg_id, LOG_CHANNEL, str);
-	send_message(commander->msg_id, commander->team_id + 1, str);
 	free(str);
 	return (0);
 }
@@ -55,10 +54,10 @@ static int commander_actions(commander_t *c)
 	if (find_target(c)) {
 		c->game_started = 1;
 		asprintf(&order, "2;%d;3;%d;%d", c->team_id, c->tx, c->ty);
-		send_message(c->msg_id, 1, order);
 		for (int i = 0 ; i < c->p_count ; i++) {
 			send_message(c->msg_id, c->team_id + 1, order);
 		}
+		send_message(c->msg_id, LOG_CHANNEL, order);
 		free(order);
 	}
 	else if (c->game_started && !count_players(c))
@@ -81,11 +80,11 @@ static void *start_commander(void *arg)
 	while (CONTINUE && still_continue) {
 		if (!commander_actions(&cmd))
 			still_continue = 0;
-		usleep(70000);
+		usleep(100000);
 	}
 	asprintf(&str, "2;%d;2", cmd.team_id);
-	send_message(cmd.msg_id, LOG_CHANNEL, str);
 	send_message(cmd.msg_id, cmd.team_id + 1, str);
+	send_message(cmd.msg_id, LOG_CHANNEL, str);
 	free(str);
 	return ("OK");
 }

@@ -53,10 +53,12 @@ typedef struct tmp_data_s {
 	int count;
 } tmp_data_t;
 
+#pragma pack(push, 1)
 typedef struct msg_s {
 	long mtype;
 	char mtext[MSG_SIZE];
 } msg_t;
+#pragma pack(pop)
 
 /*
 ** two semaphores will be created.
@@ -153,7 +155,7 @@ void follow_the_order(player_t *player);
 */
 int rand_nbr(size_t max);
 int is_in_range(int x, int y, size_t w, size_t h);
-void operate_on_sem(int sem_id, short op);
+void operate_on_sem(int sem_id, short num, short op);
 int send_message(int msg_q, int channel, char *content);
 int receive_message(int msg_q, int channel, char **content, int flags);
 char **my_str_to_wordtab(const char *str, char c);

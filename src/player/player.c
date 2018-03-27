@@ -19,19 +19,20 @@ static const char *ERROR_MSG = "Error : can't find a positon for the player";
 */
 int init_player(lemipc_t *lem, player_t *player)
 {
-	char *str;
+	char *str = NULL;
 
 	player->mem = lem->mem;
 	player->shm_id = lem->shm_id;
 	player->sem_id = lem->sem_id;
 	player->msg_id = lem->msg_id;
 	player->team_id = lem->args->team_id;
+	player->tx = (int) (lem->mem->width / 2);
+	player->ty = (int) (lem->mem->height / 2);
 	if (determine_starting_position(player))
 		return (dprintf(2, "%s", ERROR_MSG) * 0 + 1);
 	player->mem->map[player->posy][player->posx] = player->team_id;
 	asprintf(&str, "1;%d;1", player->team_id);
 	send_message(player->msg_id, LOG_CHANNEL, str);
-	send_message(player->msg_id, player->team_id + 1, str);
 	free(str);
 	return (0);
 }
@@ -62,7 +63,6 @@ void move_random(player_t *player)
 {
 	int direction = rand_nbr(4);
 
-	operate_on_sem(player->sem_id, -1);
 	switch (direction) {
 	case 0:
 		move_right(player);
@@ -77,7 +77,6 @@ void move_random(player_t *player)
 		move_top(player);
 		break;
 	}
-	operate_on_sem(player->sem_id, 1);
 }
 
 int start_player(lemipc_t *lem)
@@ -89,16 +88,17 @@ int start_player(lemipc_t *lem)
 		return (1);
 	while (!should_player_die(&player) && CONTINUE &&
 		shmget(lem->key, sizeof(sh_mem_t), SHM_R) != -1) {
+		operate_on_sem(player.sem_id, 0, -1);
 		if (get_commander_orders(&player, lem))
 			follow_the_order(&player);
 		else
 			move_random(&player);
+		operate_on_sem(player.sem_id, 0, 1);
 		usleep(70000);
 	}
 	player.mem->map[player.posy][player.posx] = 0;
 	asprintf(&str, "1;%d;2", player.team_id);
 	send_message(player.msg_id, LOG_CHANNEL, str);
-	send_message(player.msg_id, player.team_id + 1, str);
 	free(str);
 	return (0);
 }

@@ -59,8 +59,8 @@ void init_semaphores(lemipc_t *lem)
 
 void init_message_queue(lemipc_t *lem)
 {
-	lem->msg_id = msgget(lem->key, SHM_W | SHM_R);
+	lem->msg_id = msgget(lem->key, SHM_W | SHM_R | IPC_EXCL);
 	if (lem->msg_id == -1) {
-		lem->msg_id = msgget(lem->key, IPC_CREAT | SHM_W | SHM_R);
+		lem->msg_id = msgget(lem->key, IPC_CREAT | SHM_W | SHM_R | IPC_EXCL);
 	}
 }

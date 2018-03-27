@@ -103,8 +103,10 @@ int get_commander_orders(player_t *p, lemipc_t *lem)
 	int type;
 
 	if (receive_message(p->msg_id, p->team_id + 1, &str, IPC_NOWAIT)) {
-		if (str && str[0] == '1')
+		if (str && str[0] == '1') {
 			send_message(p->msg_id, p->team_id + 1, str);
+			return (1);
+		}
 		tab = my_str_to_wordtab(str, ';');
 		type = atoi(tab[2]);
 		if (type == 3) {
