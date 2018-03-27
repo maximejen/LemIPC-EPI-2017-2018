@@ -13,8 +13,8 @@
 	#define WIN_WIDTH 800
 	#define WIN_HEIGHT 800
 	#define MSG_SIZE 32
-
 	#define LOG_CHANNEL 1
+	#define TIMEOUT 10
 
 	#define ABS(x) (x < 0 ? x * -1 : x)
 
@@ -86,6 +86,7 @@ typedef struct lemipc_s {
 	args_t *args;
 	pthread_t graph_thread;
 	pthread_t cmd;
+	pthread_t time;
 } lemipc_t;
 
 typedef struct player_s {
@@ -185,6 +186,11 @@ char *interpret_message(const char *content);
 int create_commander(lemipc_t *);
 int find_target(commander_t *cmd);
 int update_connections(commander_t *cmd);
+
+/*
+** Time Handle Function
+*/
+void *time_handle(void *arg);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);

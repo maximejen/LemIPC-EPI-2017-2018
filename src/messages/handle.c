@@ -11,12 +11,13 @@
 #include <errno.h>
 #include "../../include/lemipc.h"
 
-const char *SUB[2] = {"Player", "Commander"};
+const char *SUB[3] = {"Player", "Commander", "Time"};
 
-const char *MSG_TYPE[3] = {
+const char *MSG_TYPE[4] = {
 	"A %s from team %s just connected",
 	"A %s from team %s just disconnected",
-	"Commander[%s] commands to go %s:%s"
+	"Commander[%s] commands to go %s:%s",
+	"%s is running out ... %s sec remaining"
 };
 
 char *interpret_message(const char *content)
@@ -29,10 +30,13 @@ char *interpret_message(const char *content)
 	if (tab) {
 		type = atoi(tab[2]);
 		sub = atoi(tab[0]);
-		if (type - 1 < 2)
+		if (sub == 3)
 			asprintf(&ret, MSG_TYPE[type - 1], SUB[sub - 1],
 				 tab[1]);
-		else
+		if ((sub == 1 || sub == 2) && type - 1 < 2)
+			asprintf(&ret, MSG_TYPE[type - 1], SUB[sub - 1],
+				 tab[1]);
+		else if (sub == 1 || sub == 2)
 			asprintf(&ret, MSG_TYPE[type - 1], tab[1], tab[3],
 				 tab[4]);
 	}

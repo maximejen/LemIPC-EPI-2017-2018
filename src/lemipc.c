@@ -36,6 +36,9 @@ static int create_threads(lemipc_t *lem)
 		}
 		if (ret != 0)
 			perror("pthread_create");
+		ret = pthread_create(&lem->time, NULL, &time_handle, lem);
+		if (ret != 0)
+			perror("pthread_create");
 	}
 	if (lem->is_commander)
 		create_commander(lem);

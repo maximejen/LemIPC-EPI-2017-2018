@@ -27,7 +27,8 @@ static const char *HELP_MESSAGE =
 		"\t./lemipc PATH TEAM_NUMBER\n\n"
 		"DESCRIPTION\n"
 		"\tPATH\t\tnumber of philosophers\n"
-		"\tTEAM_NUMBER\tteam number of the current champion (greater than 0)";
+		"\tTEAM_NUMBER\tteam number of the current champion"
+		"(greater than 0)";
 
 static void fill_string(char **str, const char *to_copy)
 {

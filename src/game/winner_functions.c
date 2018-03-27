@@ -17,10 +17,16 @@ void print_winner(lemipc_t *lem)
 	t = find_winner(lem);
 	if (t) {
 		c = get_color((unsigned int) t);
-		printf("\nAnd the winner of THE FIGHT is...");
+		printf("\nAnd the winner of THE FIGHT is.");
 		fflush(stdout);
-		sleep(2);
-		printf("Team : \e[48;5;%d;%d;%dm\e[30m%d\e[0m\nGG!\n",
+		sleep(1);
+		printf(".");
+		fflush(stdout);
+		sleep(1);
+		printf(".");
+		fflush(stdout);
+		sleep(1);
+		printf(" Team : \e[48;5;%d;%d;%dm\e[30m%d\e[0m\nGG!\n",
 		       c->r, c->g, c->b, t);
 	}
 }
