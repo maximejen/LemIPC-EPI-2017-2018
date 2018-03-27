@@ -23,7 +23,7 @@ static const char *WELCOME_MESSAGE = "You just entered the textual printing"
 ** The purpose of this function is to print a char in the color dedicated
 ** to the team of the player in the map.
 */
-static void print_char(int team_id)
+void print_char(int team_id)
 {
 	color_t *color = get_color((unsigned int)team_id);
 	printf("\e[48;5;%d;%d;%dm  \e[0m",
@@ -76,6 +76,21 @@ void print_map_text(lemipc_t *lem, int back)
 	fflush(stdout);
 }
 
+static void print_logs(lemipc_t *lem)
+{
+	char *msg = NULL;
+	char *interp_msg;
+
+	receive_message(lem->msg_id, 1, &msg, IPC_NOWAIT);
+	if (msg != NULL) {
+		interp_msg = interpret_message(msg);
+		printf("%*s\n", WIDTH * 2 + 2, interp_msg);
+		free(msg);
+		free(interp_msg);
+		msg = NULL;
+	}
+}
+
 /*
 ** Description :
 ** When the user did not precise to render in graphic the program, a thread
@@ -89,6 +104,7 @@ void *textual_render(void *arg)
 	printf("\e[?25l");
 	fflush(stdout);
 	while (CONTINUE) {
+		print_logs(lem);
 		print_map_text(lem, 1);
 	}
 	print_map_text(lem, 0);

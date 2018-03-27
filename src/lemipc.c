@@ -13,6 +13,7 @@
 #include <sys/msg.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
+#include <zconf.h>
 #include "../include/lemipc.h"
 
 int CONTINUE = 1;
@@ -109,6 +110,7 @@ int lemipc_start(args_t *args)
 	start_player(&lem);
 	join_threads(&lem);
 	if (lem.is_first) {
+		print_winner(&lem);
 		shmctl(lem.shm_id, IPC_RMID, NULL);
 		semctl(lem.sem_id, 0, IPC_RMID);
 		semctl(lem.sem_id, 1, IPC_RMID);

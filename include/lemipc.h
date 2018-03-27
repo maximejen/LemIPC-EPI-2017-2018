@@ -32,6 +32,16 @@ typedef struct args_s {
 	int is_graphical;
 } args_t;
 
+typedef struct mbr_counter_s {
+	int team_id;
+	int count;
+} mbr_counter_t;
+
+typedef struct mbr_counter_list_s {
+	mbr_counter_t *data;
+	struct mbr_counter_list_s *next;
+} mbr_counter_list_t;
+
 /*
 ** This struct represent the memory shared between all the programs
 ** keys for the map :
@@ -106,7 +116,6 @@ typedef struct graph_print_s {
 
 } graph_print_t;
 
-
 /*
 ** Functions
 */
@@ -120,6 +129,7 @@ void init_message_queue(lemipc_t *lem);
 */
 void *textual_render(void *arg);
 void print_map_text(lemipc_t *lem, int back);
+void print_char(int team_id);
 
 /*
 ** Graphical Render Functions
@@ -161,6 +171,8 @@ int receive_message(int msg_q, int channel, char **content, int flags);
 char **my_str_to_wordtab(const char *str, char c);
 void free_wordtab(char **tab);
 int should_i_be_commander(lemipc_t *lem);
+int find_winner(lemipc_t *lem);
+void print_winner(lemipc_t *lem);
 
 /*
 ** Message Functions
