@@ -89,10 +89,11 @@ int start_player(lemipc_t *lem)
 		return (1);
 	while (!should_player_die(&player) && CONTINUE &&
 		shmget(lem->key, sizeof(sh_mem_t), SHM_R) != -1) {
-		// Todo : Check the commander is still alive
-		// Todo : Get the instructions of the commander
+		if (get_commander_orders(&player, lem))
+			follow_the_order(&player);
+		else
+			move_random(&player);
 		usleep(70000);
-		move_random(&player);
 	}
 	player.mem->map[player.posy][player.posx] = 0;
 	asprintf(&str, "1;%d;2", player.team_id);

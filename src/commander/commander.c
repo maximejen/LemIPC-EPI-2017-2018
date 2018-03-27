@@ -7,7 +7,21 @@
 
 #include <stdio.h>
 #include <memory.h>
+#include <zconf.h>
 #include "../../include/lemipc.h"
+
+static int count_players(commander_t *cmd)
+{
+	int count = 0;
+	size_t h = cmd->mem->height;
+	size_t w = cmd->mem->width;
+
+	for (size_t i = 0 ; i < h * w ; i++) {
+		if (cmd->mem->map[i / h][i % w] == cmd->team_id)
+			count++;
+	}
+	return (count);
+}
 
 /*
 ** Description:
@@ -21,9 +35,11 @@ static int init_commander(lemipc_t *lem, commander_t *commander)
 	commander->shm_id = lem->shm_id;
 	commander->sem_id = lem->sem_id;
 	commander->msg_id = lem->msg_id;
-	commander->target_x = rand_nbr(lem->mem->width);
-	commander->target_y = rand_nbr(lem->mem->height);
+	commander->tx = rand_nbr(lem->mem->width);
+	commander->ty = rand_nbr(lem->mem->height);
 	commander->team_id = lem->args->team_id;
+	commander->p_count = count_players(commander);
+	commander->game_started = 0;
 	asprintf(&str, "2;%d;1", commander->team_id);
 	send_message(commander->msg_id, LOG_CHANNEL, str);
 	send_message(commander->msg_id, commander->team_id + 1, str);
@@ -31,18 +47,41 @@ static int init_commander(lemipc_t *lem, commander_t *commander)
 	return (0);
 }
 
+static int commander_actions(commander_t *c)
+{
+	char *order;
+
+	update_connections(c);
+	if (find_target(c)) {
+		c->game_started = 1;
+		asprintf(&order, "2;%d;3;%d;%d", c->team_id, c->tx, c->ty);
+		send_message(c->msg_id, 1, order);
+		for (int i = 0 ; i < c->p_count ; i++) {
+			send_message(c->msg_id, c->team_id + 1, order);
+		}
+		free(order);
+	}
+	else if (c->game_started && !count_players(c))
+		return (0);
+	else {
+		c->tx = rand_nbr(c->mem->width);
+		c->ty = rand_nbr(c->mem->height);
+	}
+	return (1);
+}
+
 static void *start_commander(void *arg)
 {
 	lemipc_t *lem = arg;
 	commander_t cmd;
 	char *str;
+	int still_continue = 1;
 
 	init_commander(lem, &cmd);
-	printf("found a target ? %s\n", find_target(&cmd) ? "t" : "f");
-	while (CONTINUE) {
-		// Todo : Check the msg_q to find a player that connects
-		// Todo : find target.
-		// Todo : give to the team the order to kill the target.
+	while (CONTINUE && still_continue) {
+		if (!commander_actions(&cmd))
+			still_continue = 0;
+		usleep(70000);
 	}
 	asprintf(&str, "2;%d;2", cmd.team_id);
 	send_message(cmd.msg_id, LOG_CHANNEL, str);

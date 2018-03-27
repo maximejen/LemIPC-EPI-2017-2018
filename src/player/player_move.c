@@ -5,6 +5,7 @@
 ** player_move.c
 */
 
+#include <stdio.h>
 #include "../../include/lemipc.h"
 
 void move_right(player_t *player)
@@ -57,4 +58,21 @@ void move_top(player_t *player)
 		player->mem->map[y][x] = 0;
 		player->posy--;
 	}
+}
+
+void follow_the_order(player_t *player)
+{
+	int x = player->tx;
+	int y = player->ty;
+
+	if (ABS(y - player->posy) > ABS(x - player->posx))
+		if (y - player->posy < 0)
+			move_top(player);
+		else
+			move_bot(player);
+	else
+		if (x - player->posx < 0)
+			move_left(player);
+		else
+			move_right(player);
 }

@@ -50,3 +50,11 @@ char **my_str_to_wordtab(const char *str, char c)
 	tab[size] = NULL;
 	return (tab);
 }
+
+void free_wordtab(char **tab)
+{
+	for (int i = 0 ; tab[i] ; i++) {
+		free(tab[i]);
+	}
+	free(tab);
+}

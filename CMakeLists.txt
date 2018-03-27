@@ -14,6 +14,6 @@ set(sources
         include/color.h
         src/render/color/handle_color_list.c
         src/render/graphical/print_map.c
-        src/player/player.c src/player/utility.c src/player/player_move.c src/utility.c src/messages/handle.c src/messages/my_str_to_wordtab.c src/commander/commander.c src/commander/snail_research.c)
+        src/player/player.c src/player/utility.c src/player/player_move.c src/utility.c src/messages/handle.c src/messages/my_str_to_wordtab.c src/commander/commander.c src/commander/snail_research.c src/commander/commander_functions.c src/player/commander_relieving.c)
 
 add_executable(lemipc ${sources})

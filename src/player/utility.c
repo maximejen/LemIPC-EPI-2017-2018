@@ -95,3 +95,27 @@ void get_nearby_cells(int *nearby, player_t *p)
 	nearby[7] = is_in_range(x + 1, y + 1, w, h) ? p->mem->map[y + 1][x + 1]
 						    : -1;
 }
+
+int get_commander_orders(player_t *p, lemipc_t *lem)
+{
+	char *str;
+	char **tab = NULL;
+	int type;
+
+	if (receive_message(p->msg_id, p->team_id + 1, &str, IPC_NOWAIT)) {
+		if (str && str[0] == '1')
+			send_message(p->msg_id, p->team_id + 1, str);
+		tab = my_str_to_wordtab(str, ';');
+		type = atoi(tab[2]);
+		if (type == 3) {
+			p->tx = atoi(tab[3]);
+			p->ty = atoi(tab[4]);
+		}
+		else if (type == 2)
+			commander_relieving(lem);
+		free(str);
+		free_wordtab(tab);
+		return (1);
+	}
+	return (0);
+}

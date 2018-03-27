@@ -16,6 +16,8 @@
 
 	#define LOG_CHANNEL 1
 
+	#define ABS(x) (x < 0 ? x * -1 : x)
+
 	#include <sys/ipc.h>
 	#include <pthread.h>
 	#include <SFML/Graphics.h>
@@ -82,6 +84,8 @@ typedef struct player_s {
 	int posx;
 	int posy;
 	int team_id;
+	int tx;
+	int ty;
 } player_t;
 
 typedef struct commander_s {
@@ -89,9 +93,11 @@ typedef struct commander_s {
 	int shm_id;
 	int sem_id;
 	int msg_id;
-	int target_x;
-	int target_y;
+	int tx;
+	int ty;
 	int team_id;
+	int p_count;
+	int game_started;
 } commander_t;
 
 typedef struct graph_print_s {
@@ -133,11 +139,14 @@ void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 int start_player(lemipc_t *lem);
 int init_player(lemipc_t *lem, player_t *player);
 int determine_starting_position(player_t *player);
+int get_commander_orders(player_t *p, lemipc_t *lem);
 void get_nearby_cells(int *nearby, player_t *p);
 void move_right(player_t *player);
 void move_left(player_t *player);
 void move_top(player_t *player);
 void move_bot(player_t *player);
+void commander_relieving(lemipc_t *lem);
+void follow_the_order(player_t *player);
 
 /*
 ** Utility Functions
@@ -148,6 +157,7 @@ void operate_on_sem(int sem_id, short op);
 int send_message(int msg_q, int channel, char *content);
 int receive_message(int msg_q, int channel, char **content, int flags);
 char **my_str_to_wordtab(const char *str, char c);
+void free_wordtab(char **tab);
 int should_i_be_commander(lemipc_t *lem);
 
 /*
@@ -160,6 +170,7 @@ char *interpret_message(const char *content);
 */
 int create_commander(lemipc_t *);
 int find_target(commander_t *cmd);
+int update_connections(commander_t *cmd);
 
 // need it because stdio.h does not have it... no need, need #define GNU_SOURCE
 int asprintf(char **strp, const char *fmt, ...);

@@ -29,7 +29,7 @@ char *interpret_message(const char *content)
 	if (tab) {
 		type = atoi(tab[2]);
 		sub = atoi(tab[0]);
-		if (type < 2)
+		if (type - 1 < 2)
 			asprintf(&ret, MSG_TYPE[type - 1], SUB[sub - 1],
 				 tab[1]);
 		else
@@ -57,9 +57,9 @@ int receive_message(int msg_q, int channel, char **content, int flags)
 	msg_t msg;
 	int ret = 1;
 
-	if (msgrcv(msg_q, &msg, sizeof(msg_t), channel, flags) == -1) {
-		if (errno != ENOMSG)
-			ret = 0;
+	msgrcv(msg_q, &msg, sizeof(msg_t), channel, flags);
+	if (errno == ENOMSG) {
+		ret = 0;
 	}
 	else {
 		*content = strdup(msg.mtext);

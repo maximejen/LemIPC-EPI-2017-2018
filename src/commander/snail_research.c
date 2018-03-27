@@ -6,29 +6,12 @@
 */
 
 #include <memory.h>
+#include <stdio.h>
+#include <zconf.h>
 #include "../../include/lemipc.h"
 
 static const int OPE_X[4] = {0, 1, 0, -1};
 static const int OPE_Y[4] = {-1, 0, 1, 0};
-
-static int find_in_line(tmp_data_t *s, int **tmp, int team_id)
-{
-	int i = 0;
-
-	while ((is_in_range(*s->x, *s->y, s->width, s->height) &&
-		(tmp[*s->y][*s->x] == 0 || tmp[*s->y][*s->x] == team_id)) ||
-	       i < s->size) {
-		*s->x += OPE_X[s->count % 4];
-		*s->y += OPE_Y[s->count % 4];
-		if (is_in_range(*s->x, *s->y, s->width, s->height) &&
-		    tmp[*s->y][*s->x] != 0 && tmp[*s->y][*s->x] != team_id)
-			return (1);
-		if (is_in_range(*s->x, *s->y, s->width, s->height))
-			tmp[*s->y][*s->x] = -1;
-		i++;
-	}
-	return (0);
-}
 
 //static void dump_map(int **tmp, size_t x, size_t y)
 //{
@@ -49,6 +32,20 @@ static int find_in_line(tmp_data_t *s, int **tmp, int team_id)
 //			printf(".\n");
 //	}
 //}
+
+static int find_in_line(tmp_data_t *s, int **tmp, int team_id)
+{
+	for (int i = 0 ; i < s->size ; i++) {
+		if (is_in_range(*s->x, *s->y, s->width, s->height) &&
+		    tmp[*s->y][*s->x] != team_id && tmp[*s->y][*s->x] > 0)
+			return (1);
+		if (is_in_range(*s->x, *s->y, s->width, s->height))
+			tmp[*s->y][*s->x] = -1;
+		*s->x += OPE_X[s->count % 4];
+		*s->y += OPE_Y[s->count % 4];
+	}
+	return (0);
+}
 
 static int **copy_tab(sh_mem_t *mem)
 {
@@ -102,12 +99,12 @@ int find_target(commander_t *cmd)
 	size_t width = cmd->mem->width;
 	size_t height = cmd->mem->height;
 	int **tmp = copy_tab(cmd->mem);
-	tmp_data_t s = {width, height, &cmd->target_x, &cmd->target_y, 0, 0};
+	tmp_data_t s = {width, height, &cmd->tx, &cmd->ty, 0, 0};
 
 	while (can_continue(tmp, &s, cmd)) {
 		if (find_in_line(&s, tmp, cmd->team_id) == 1) {
-			cmd->target_x = *s.x;
-			cmd->target_y = *s.y;
+			cmd->tx = *s.x;
+			cmd->ty = *s.y;
 			free_tmp(tmp, height);
 			return (1);
 		}
@@ -118,5 +115,3 @@ int find_target(commander_t *cmd)
 	free_tmp(tmp, height);
 	return (0);
 }
-
-
