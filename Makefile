@@ -32,7 +32,8 @@ SRC	=	src/main.c					\
 		src/messages/my_str_to_wordtab.c		\
 		src/game/determine_winner.c			\
 		src/game/winner_functions.c			\
-		src/game/time_handler.c
+		src/game/time_handler.c				\
+		src/render/graphical/put_targets.c
 
 OBJ	=	$(SRC:.c=.o)
 

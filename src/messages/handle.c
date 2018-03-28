@@ -40,6 +40,7 @@ char *interpret_message(const char *content)
 			asprintf(&ret, MSG_TYPE[type - 1], tab[1], tab[3],
 				 tab[4]);
 	}
+	free_wordtab(tab);
 	return (ret);
 }
 

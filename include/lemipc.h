@@ -42,6 +42,17 @@ typedef struct mbr_counter_list_s {
 	struct mbr_counter_list_s *next;
 } mbr_counter_list_t;
 
+typedef struct team_target_s {
+	int team_id;
+	int x;
+	int y;
+} team_target_t;
+
+typedef struct team_target_list_s {
+	team_target_t *data;
+	struct team_target_list_s *next;
+} team_target_list_t;
+
 /*
 ** This struct represent the memory shared between all the programs
 ** keys for the map :
@@ -145,6 +156,10 @@ void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
 	sfVector2f *win_size);
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 		    sfVector2f position, sfColor color);
+
+void edit_target(int team_id, int x, int y);
+void reset_target_stack();
+void put_targets(sfRenderWindow *window, lemipc_t *lem);
 
 /*
 ** Player Functions

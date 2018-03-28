@@ -39,6 +39,7 @@ void *time_handle(void *arg)
 			count = 0;
 			continue;
 		}
+		reset_target_stack();
 		sleep(1);
 		count++;
 		asprintf(&str, "3;%d;4", TIMEOUT - count);

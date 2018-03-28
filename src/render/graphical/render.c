@@ -25,24 +25,35 @@ static void draw_window(sfRenderWindow *window, lemipc_t *lem,
 	}
 	sfRenderWindow_clear(window, sfBlack);
 	print_map_graph(lem, window, win_size);
+	put_targets(window, lem);
 	sfRenderWindow_display(window);
 }
 
-static void render_window(sfRenderWindow *window, lemipc_t *lem,
-	sfVector2f *win_size)
+static void interpret_and_print_log(lemipc_t *lem)
 {
 	char *msg = NULL;
 	char *interp_msg = NULL;
+	char **t;
 
+	receive_message(lem->msg_id, 1, &msg, IPC_NOWAIT);
+	if (msg != NULL) {
+		t = my_str_to_wordtab(msg, ';');
+		interp_msg = interpret_message(msg);
+		printf("%s\n", interp_msg);
+		if (atoi(t[0]) == 2 && atoi(t[2]) == 3)
+			edit_target(atoi(t[1]), atoi(t[3]), atoi(t[4]));
+		free(msg);
+		free(interp_msg);
+		free_wordtab(t);
+		msg = NULL;
+	}
+}
+
+static void render_window(sfRenderWindow *window,
+	lemipc_t *lem, sfVector2f *win_size)
+{
 	while (sfRenderWindow_isOpen(window) && CONTINUE) {
-		receive_message(lem->msg_id, 1, &msg, IPC_NOWAIT);
-		if (msg != NULL) {
-			interp_msg = interpret_message(msg);
-			printf("%s\n", interp_msg);
-			free(msg);
-			free(interp_msg);
-			msg = NULL;
-		}
+		interpret_and_print_log(lem);
 		draw_window(window, lem, win_size);
 	}
 }
@@ -62,6 +73,7 @@ void *graphical_render(void *arg)
 	printf("%s", WELCOME_MESSAGE);
 	render_window(window, lem, &win_size);
 	sfRenderWindow_destroy(window);
+	reset_target_stack();
 	kill(0, SIGINT);
 	return ("OK");
 }
