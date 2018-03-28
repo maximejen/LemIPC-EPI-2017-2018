@@ -8,7 +8,7 @@ import sys, re, os
 seed(os.getpid())
 
 global path
-path = " > .nocarelemipc ./lemipc " + check_output("pwd", shell = True).decode("utf8").strip() + " "
+path = "./lemipc " + check_output("pwd", shell = True).decode("utf8").strip() + " "
 
 def help():
 	progname = re.findall("([^/.]+)$", sys.argv[0])[0]
@@ -33,7 +33,8 @@ def check_args(args):
 		"members": 10,
 		"time": "",
 		"unique": [],
-		"ids": [ "0" ]
+		"ids": [ "0" ],
+		"started": False
 	}
 	optlist, args = getopt(args[1:], 'u:t:l:m:hg', [
 		'unique-team=', 'teams=', 'time-limit=', 'members=', 'help', 'graphical'])
@@ -61,7 +62,7 @@ def check_args(args):
 				if not re.match("^\d+,\d+$", opt[1]):
 					help()
 				args = re.findall("^(\d+),(\d+)$", opt[1])
-				ret["unique"].append({ "id": args[0][0], "members": args[0][1]})
+				ret["unique"].append({ "id": args[0][1], "members": args[0][0]})
 	return ret
 def make_file():
 	run("make", shell = True)
@@ -74,21 +75,30 @@ def clean():
 def create_unique(dict):
 	for team in dict["unique"]:
 		if not int(team["id"]) in dict["ids"]:
-			print("Creating team of " + team["members"] + " members with id : " + team["id"] + ".")
+			# print("Creating team of " + team["members"] + " members with id : " + team["id"] + ".")
 			for i in range(0, int(team["members"])):
 				run(dict["time"] + path + team["id"] + " &", shell = True)
+				if not dict["started"]:
+					dict["started"] = True
+					global path
+					path = "> .nocarelemipc " + path
 			dict["ids"].append(int(team["id"]))
 def create_teams(dict):
 	for i in range(0, dict["teams"]):
 		id = "0"
 		while id in dict["ids"]:
 			id = str(randrange(1, 100000))
-		print("Creating team of " + str(dict["members"]) + " members with id : " + str(id) + ".")
+		# print("Creating team of " + str(dict["members"]) + " members with id : " + str(id) + ".")
 		create_members(id, dict["members"])
 def create_members(id, numbers):
 	for i in range(0, numbers):
-		print(dict["time"] + path + id)
+		# print(dict["time"] + path + id)
 		run(dict["time"] + path + id + " &", shell = True)
+		if not dict["started"]:
+			dict["started"] = True
+			global path
+			path = "> .nocarelemipc " + path
+
 # Main -------------------------------------------------------------------------
 dict = check_args(sys.argv)
 make_file()
