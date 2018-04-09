@@ -8,11 +8,10 @@
 #include <stdlib.h>
 #include "../../../include/color.h"
 
-static color_list_t *LIST = NULL;
 
-color_t *find_color_by_key(unsigned int key)
+color_t *find_color_by_key(color_list_t **list, unsigned int key)
 {
-	color_list_t *tmp = LIST;
+	color_list_t *tmp = *list;
 
 	while (tmp && tmp->next != NULL) {
 		if (key == tmp->color->key)
@@ -22,9 +21,9 @@ color_t *find_color_by_key(unsigned int key)
 	return (NULL);
 }
 
-int add_color_to_list(color_t *color)
+int add_color_to_list(color_list_t **list, color_t *color)
 {
-	color_list_t *tmp = LIST;
+	color_list_t *tmp = *list;
 	color_list_t *element = malloc(sizeof(color_list_t));
 
 	if (!element)
@@ -32,7 +31,7 @@ int add_color_to_list(color_t *color)
 	element->color = color;
 	element->next = NULL;
 	if (tmp == NULL) {
-		LIST = element;
+		*list = element;
 		return (0);
 	}
 	while (tmp && tmp->next != NULL)
@@ -42,25 +41,30 @@ int add_color_to_list(color_t *color)
 	return (0);
 }
 
-color_t *get_color(unsigned int key)
+color_t *get_color(int key)
 {
-	color_t *color = find_color_by_key(key);
+	static color_list_t *list = NULL;
+	color_t *color = find_color_by_key(&list, (unsigned int) key);
 
+	if (key == -1) {
+		reset_colors(list);
+		return (NULL);
+	}
 	if (!color) {
-		color = generate_color(key);
+		color = generate_color((unsigned int) key);
 		if (!color)
 			return (NULL);
-		add_color_to_list(color);
+		add_color_to_list(&list, color);
 	}
 	return (color);
 }
 
-void remove_from_list(color_list_t *element)
+void remove_from_list(color_list_t **list, color_list_t *element)
 {
-	color_list_t *tmp = LIST;
+	color_list_t *tmp = *list;
 
-	if (element == LIST) {
-		LIST = element->next;
+	if (element == *list) {
+		*list = element->next;
 		free(element->color);
 		free(element);
 		tmp = NULL;
@@ -76,12 +80,12 @@ void remove_from_list(color_list_t *element)
 	element = NULL;
 }
 
-void reset_colors(void)
+void reset_colors(color_list_t *list)
 {
-	while (LIST) {
-		remove_from_list(LIST);
+	while (list) {
+		remove_from_list(&list, list);
 	}
-	free(LIST);
-	LIST = NULL;
+	free(list);
+	list = NULL;
 }
 

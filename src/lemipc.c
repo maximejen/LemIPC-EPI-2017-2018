@@ -77,6 +77,7 @@ static int lemipc_init(args_t *args, lemipc_t *lem)
 	lem->is_commander = 0;
 	lem->key = ftok(args->path, 0);
 	lem->args = args;
+	lem->trg_list = NULL;
 	if (args->team_name == NULL)
 		asprintf(&args->team_name, "%d", args->team_id);
 	init_shared_memory(lem);

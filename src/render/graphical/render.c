@@ -41,7 +41,8 @@ static void interpret_and_print_log(lemipc_t *lem)
 		interp_msg = interpret_message(msg);
 		printf("%s\n", interp_msg);
 		if (atoi(t[0]) == 2 && atoi(t[2]) == 3)
-			edit_target(atoi(t[1]), atoi(t[3]), atoi(t[4]));
+			edit_target(atoi(t[1]), atoi(t[3]), atoi(t[4]),
+				    &lem->trg_list);
 		free(msg);
 		free(interp_msg);
 		free_wordtab(t);
@@ -73,7 +74,7 @@ void *graphical_render(void *arg)
 	printf("%s", WELCOME_MESSAGE);
 	render_window(window, lem, &win_size);
 	sfRenderWindow_destroy(window);
-	reset_target_stack();
+	reset_target_stack(lem->trg_list);
 	kill(0, SIGINT);
 	return ("OK");
 }

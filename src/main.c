@@ -24,11 +24,14 @@ static const char *ERROR_MESSAGE = "Error : The team_id should be greater"
 
 static const char *HELP_MESSAGE =
 	"USAGE\n"
-		"\t./lemipc PATH TEAM_NUMBER\n\n"
+		"\t./lemipc PATH TEAM_NUMBER [-g|--graphical]\n\n"
 		"DESCRIPTION\n"
-		"\tPATH\t\tnumber of philosophers\n"
+		"\tPATH\t\tpath for the IPC generation\n"
 		"\tTEAM_NUMBER\tteam number of the current champion"
-		"(greater than 0)";
+		"(greater than 0)\n"
+		"\t--graphical\ttrigger the graphical mode.\n\t\t\tYou "
+		"can find a little "
+		"rectangle that represent the target of the team\n";
 
 static void fill_string(char **str, const char *to_copy)
 {

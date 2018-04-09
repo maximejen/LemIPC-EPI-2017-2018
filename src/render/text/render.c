@@ -108,7 +108,7 @@ void *textual_render(void *arg)
 		print_map_text(lem, 1);
 	}
 	print_map_text(lem, 0);
-	reset_colors();
+	get_color(-1);
 	printf("\e[?25h");
 	fflush(stdout);
 	return ("OK");

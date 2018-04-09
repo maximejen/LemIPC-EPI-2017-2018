@@ -98,6 +98,7 @@ typedef struct lemipc_s {
 	pthread_t graph_thread;
 	pthread_t cmd;
 	pthread_t time;
+	team_target_list_t *trg_list;
 } lemipc_t;
 
 typedef struct player_s {
@@ -157,8 +158,8 @@ void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 		    sfVector2f position, sfColor color);
 
-void edit_target(int team_id, int x, int y);
-void reset_target_stack();
+void edit_target(int team_id, int x, int y, team_target_list_t **);
+void reset_target_stack(team_target_list_t *);
 void put_targets(sfRenderWindow *window, lemipc_t *lem);
 
 /*

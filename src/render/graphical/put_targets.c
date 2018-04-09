@@ -8,11 +8,9 @@
 #include <stdio.h>
 #include "../../../include/lemipc.h"
 
-static team_target_list_t *TRG_LIST = NULL;
-
-static int add_target_to_list(team_target_t *data)
+static int add_target_to_list(team_target_list_t **list, team_target_t *data)
 {
-	team_target_list_t *tmp = TRG_LIST;
+	team_target_list_t *tmp = *list;
 	team_target_list_t *element = malloc(sizeof(team_target_list_t));
 
 	if (!element)
@@ -20,7 +18,7 @@ static int add_target_to_list(team_target_t *data)
 	element->data = data;
 	element->next = NULL;
 	if (tmp == NULL) {
-		TRG_LIST = element;
+		*list = element;
 		return (0);
 	}
 	while (tmp && tmp->next != NULL)
@@ -30,12 +28,13 @@ static int add_target_to_list(team_target_t *data)
 	return (0);
 }
 
-static void remove_target_from_list(team_target_list_t *element)
+static void
+remove_target_from_list(team_target_list_t **list, team_target_list_t *element)
 {
-	team_target_list_t *tmp = TRG_LIST;
+	team_target_list_t *tmp = *list;
 
-	if (element == TRG_LIST) {
-		TRG_LIST = element->next;
+	if (element == *list) {
+		*list = element->next;
 		free(element->data);
 		free(element);
 		tmp = NULL;
@@ -51,9 +50,9 @@ static void remove_target_from_list(team_target_list_t *element)
 	element = NULL;
 }
 
-void edit_target(int team_id, int x, int y)
+void edit_target(int team_id, int x, int y, team_target_list_t **list)
 {
-	team_target_list_t *tmp = TRG_LIST;
+	team_target_list_t *tmp = *list;
 	team_target_t *element = NULL;
 
 	while (tmp && tmp->data->team_id != team_id)
@@ -68,14 +67,14 @@ void edit_target(int team_id, int x, int y)
 			element->x = x;
 			element->y = y;
 			element->team_id = team_id;
-			add_target_to_list(element);
+			add_target_to_list(list, element);
 		}
 	}
 }
 
 void put_targets(sfRenderWindow *window, lemipc_t *lem)
 {
-	team_target_list_t *tmp = TRG_LIST;
+	team_target_list_t *tmp = lem->trg_list;
 	color_t *color;
 	size_t w = lem->mem->width;
 	size_t h = lem->mem->height;
@@ -97,53 +96,10 @@ void put_targets(sfRenderWindow *window, lemipc_t *lem)
 	sfRectangleShape_destroy(target);
 }
 
-void reset_target_stack()
+void reset_target_stack(team_target_list_t *list)
 {
-	while (TRG_LIST)
-		remove_target_from_list(TRG_LIST);
-	free(TRG_LIST);
-	TRG_LIST = NULL;
+	while (list)
+		remove_target_from_list(&list, list);
+	free(list);
+	list = NULL;
 }
-
-//static const char *TARGET[40] = {
-//	"0000000000000000000000000000000000000000",
-//	"0000000000000000000000000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000011111100000000000000000",
-//	"0000000000000011111111111100000000000000",
-//	"0000000000000111111111111110000000000000",
-//	"0000000000011111000110001111100000000000",
-//	"0000000000111100000110000011110000000000",
-//	"0000000001110000000110000000111000000000",
-//	"0000000001100000000110000000011000000000",
-//	"0000000011100000000110000000011100000000",
-//	"0000000111000000000110000000001110000000",
-//	"0000000111000000000000000000001110000000",
-//	"0000000110000000000000000000000110000000",
-//	"0000001110000000000000000000000111000000",
-//	"0000001110000000000000000000000111000000",
-//	"0011111111111110000000000111111111111100",
-//	"0011111111111110000000000111111111111100",
-//	"0000001110000000000000000000000111000000",
-//	"0000001110000000000000000000000111000000",
-//	"0000000110000000000000000000000110000000",
-//	"0000000111000000000000000000001110000000",
-//	"0000000111000000000110000000001110000000",
-//	"0000000011100000000110000000011100000000",
-//	"0000000001100000000110000000011000000000",
-//	"0000000001110000000110000000111000000000",
-//	"0000000000111100000110000011110000000000",
-//	"0000000000011111000110001111100000000000",
-//	"0000000000000111111111111110000000000000",
-//	"0000000000000011111111111100000000000000",
-//	"0000000000000000011111100000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000110000000000000000000",
-//	"0000000000000000000000000000000000000000",
-//	"0000000000000000000000000000000000000000"
-//};
