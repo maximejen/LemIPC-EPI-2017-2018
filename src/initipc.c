@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include "../include/lemipc.h"
 
+static const int IPC_FLAGS = IPC_CREAT | SHM_W | SHM_R | IPC_EXCL;
+
 /*
 ** Description:
 ** This function create the shared memory if it does not exists.
@@ -51,8 +53,7 @@ void init_semaphores(lemipc_t *lem)
 	if (lem->sem_id == -1) {
 		lem->sem_id = semget(lem->key, 1, IPC_CREAT | SHM_R | SHM_W);
 		if (lem->sem_id != -1) {
-			semctl(lem->sem_id, 0, SETVAL, 1); // set sem 0 (map)
-			semctl(lem->sem_id, 1, SETVAL, 1); // set sem 1 (commander)
+			semctl(lem->sem_id, 0, SETVAL, 1);
 		}
 	}
 }
@@ -61,6 +62,6 @@ void init_message_queue(lemipc_t *lem)
 {
 	lem->msg_id = msgget(lem->key, SHM_W | SHM_R | IPC_EXCL);
 	if (lem->msg_id == -1) {
-		lem->msg_id = msgget(lem->key, IPC_CREAT | SHM_W | SHM_R | IPC_EXCL);
+		lem->msg_id = msgget(lem->key, IPC_FLAGS);
 	}
 }

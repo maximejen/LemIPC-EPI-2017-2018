@@ -116,7 +116,6 @@ int lemipc_start(args_t *args)
 		print_winner(&lem);
 		shmctl(lem.shm_id, IPC_RMID, NULL);
 		semctl(lem.sem_id, 0, IPC_RMID);
-		semctl(lem.sem_id, 1, IPC_RMID);
 		msgctl(lem.msg_id, IPC_RMID, NULL);
 	}
 	return (0);

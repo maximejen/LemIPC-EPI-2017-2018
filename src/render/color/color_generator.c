@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "../../../include/color.h"
 
-color_list_t *LIST = NULL;
+static color_list_t *LIST = NULL;
 
 color_t *find_color_by_key(unsigned int key)
 {
@@ -22,26 +22,24 @@ color_t *find_color_by_key(unsigned int key)
 	return (NULL);
 }
 
-color_t *generate_color(unsigned int key)
+int add_color_to_list(color_t *color)
 {
-	color_t *color = malloc(sizeof(color_t));
+	color_list_t *tmp = LIST;
+	color_list_t *element = malloc(sizeof(color_list_t));
 
-	if (!color)
-		return (NULL);
-	if (key) {
-		srandom(key);
-		color->key = key;
-		color->r = (int)(random() % 256);
-		color->g = (int)(random() % 256);
-		color->b = (int)(random() % 256);
+	if (!element)
+		return (-1);
+	element->color = color;
+	element->next = NULL;
+	if (tmp == NULL) {
+		LIST = element;
+		return (0);
 	}
-	else {
-		color->key = key;
-		color->r = 0;
-		color->g = 0;
-		color->b = 0;
-	}
-	return (color);
+	while (tmp && tmp->next != NULL)
+		tmp = tmp->next;
+	if (tmp)
+		tmp->next = element;
+	return (0);
 }
 
 color_t *get_color(unsigned int key)
@@ -55,6 +53,27 @@ color_t *get_color(unsigned int key)
 		add_color_to_list(color);
 	}
 	return (color);
+}
+
+void remove_from_list(color_list_t *element)
+{
+	color_list_t *tmp = LIST;
+
+	if (element == LIST) {
+		LIST = element->next;
+		free(element->color);
+		free(element);
+		tmp = NULL;
+	}
+	while (tmp && tmp->next != NULL && tmp->next != element) {
+		tmp = tmp->next;
+	}
+	if (tmp) {
+		tmp->next = element->next;
+		free(element->color);
+		free(element);
+	}
+	element = NULL;
 }
 
 void reset_colors(void)
