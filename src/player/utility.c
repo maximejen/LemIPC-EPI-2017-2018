@@ -83,17 +83,17 @@ void get_nearby_cells(int *nearby, player_t *p)
 	size_t h = p->mem->height;
 
 	nearby[0] = is_in_range(x - 1, y - 1, w, h) ? p->mem->map[y - 1][x - 1]
-						    : -1;
+						: -1;
 	nearby[1] = is_in_range(x, y - 1, w, h) ? p->mem->map[y - 1][x] : -1;
 	nearby[2] = is_in_range(x + 1, y - 1, w, h) ? p->mem->map[y - 1][x + 1]
-						    : -1;
+						: -1;
 	nearby[3] = is_in_range(x - 1, y, w, h) ? p->mem->map[y][x - 1] : -1;
 	nearby[4] = is_in_range(x + 1, y, w, h) ? p->mem->map[y][x + 1] : -1;
 	nearby[5] = is_in_range(x - 1, y + 1, w, h) ? p->mem->map[y + 1][x - 1]
-						    : -1;
+						: -1;
 	nearby[6] = is_in_range(x, y + 1, w, h) ? p->mem->map[y + 1][x] : -1;
 	nearby[7] = is_in_range(x + 1, y + 1, w, h) ? p->mem->map[y + 1][x + 1]
-						    : -1;
+						: -1;
 }
 
 int get_commander_orders(player_t *p, lemipc_t *lem)
@@ -102,22 +102,20 @@ int get_commander_orders(player_t *p, lemipc_t *lem)
 	char **tab = NULL;
 	int type;
 
-	if (receive_message(p->msg_id, p->team_id + 1, &str, IPC_NOWAIT)) {
-		if (str && str[0] == '1') {
-			send_message(p->msg_id, p->team_id + 1, str);
-			return (1);
-		}
-		tab = my_str_to_wordtab(str, ';');
-		type = atoi(tab[2]);
-		if (type == 3) {
-			p->tx = atoi(tab[3]);
-			p->ty = atoi(tab[4]);
-		}
-		else if (type == 2)
-			commander_relieving(lem);
-		free(str);
-		free_wordtab(tab);
+	if (!(receive_message(p->msg_id, p->team_id + 1, &str, IPC_NOWAIT)))
+		return (0);
+	if (str && str[0] == '1') {
+		send_message(p->msg_id, p->team_id + 1, str);
 		return (1);
 	}
-	return (0);
+	tab = my_str_to_wordtab(str, ';');
+	type = atoi(tab[2]);
+	if (type == 3) {
+		p->tx = atoi(tab[3]);
+		p->ty = atoi(tab[4]);
+	} else if (type == 2)
+		commander_relieving(lem);
+	free(str);
+	free_wordtab(tab);
+	return (1);
 }

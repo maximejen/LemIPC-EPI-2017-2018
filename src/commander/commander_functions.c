@@ -22,4 +22,3 @@ int update_connections(commander_t *cmd)
 	cmd->p_count = count;
 	return (0);
 }
-

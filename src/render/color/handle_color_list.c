@@ -20,8 +20,7 @@ color_t *generate_color(unsigned int key)
 		color->r = (int)(random() % 256);
 		color->g = (int)(random() % 256);
 		color->b = (int)(random() % 256);
-	}
-	else {
+	} else {
 		color->key = key;
 		color->r = 0;
 		color->g = 0;

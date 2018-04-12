@@ -61,7 +61,8 @@ sfVector2f crvec(float x, float y)
 }
 
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
-		    sfVector2f position, sfColor color) {
+		sfVector2f position, sfColor color)
+{
 	sfRectangleShape_setPosition(cell, position);
 	sfRectangleShape_setFillColor(cell, color);
 	sfRenderWindow_drawRectangleShape(window, cell, NULL);

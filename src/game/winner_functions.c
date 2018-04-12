@@ -27,6 +27,6 @@ void print_winner(lemipc_t *lem)
 		fflush(stdout);
 		sleep(1);
 		printf(" Team : \e[48;5;%d;%d;%dm\e[30m%d\e[0m\nGG!\n",
-		       c->r, c->g, c->b, t);
+			c->r, c->g, c->b, t);
 	}
 }

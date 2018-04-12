@@ -9,8 +9,6 @@
 #include <stdio.h>
 #include "../../include/lemipc.h"
 
-int CONTINUE;
-
 static int is_there_only_one_team(lemipc_t *lem)
 {
 	size_t h = lem->mem->height;

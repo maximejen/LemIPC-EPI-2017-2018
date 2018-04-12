@@ -32,12 +32,11 @@ static const int OPE_Y[4] = {-1, 0, 1, 0};
 //			printf(".\n");
 //	}
 //}
-
 static int find_in_line(tmp_data_t *s, int **tmp, int team_id)
 {
 	for (int i = 0 ; i < s->size ; i++) {
 		if (is_in_range(*s->x, *s->y, s->width, s->height) &&
-		    tmp[*s->y][*s->x] != team_id && tmp[*s->y][*s->x] > 0)
+		tmp[*s->y][*s->x] != team_id && tmp[*s->y][*s->x] > 0)
 			return (1);
 		if (is_in_range(*s->x, *s->y, s->width, s->height))
 			tmp[*s->y][*s->x] = -1;
@@ -88,8 +87,8 @@ static int can_continue(int **tmp, tmp_data_t *s, commander_t *cmd)
 			ret = 1;
 	}
 	if (ret && !(!is_in_range(*s->x, *s->y, s->width, s->height) ||
-		     tmp[*s->y][*s->x] == cmd->team_id ||
-		     tmp[*s->y][*s->x] <= 0))
+		tmp[*s->y][*s->x] == cmd->team_id ||
+		tmp[*s->y][*s->x] <= 0))
 		ret = 0;
 	return (ret);
 }

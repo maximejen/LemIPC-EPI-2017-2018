@@ -20,7 +20,7 @@ static void draw_window(sfRenderWindow *window, lemipc_t *lem,
 
 	while (sfRenderWindow_pollEvent(window, &e)) {
 		if (e.type == sfEvtClosed || (is_esc_pressed(&e) == 1) ||
-		    !CONTINUE)
+		!CONTINUE)
 			sfRenderWindow_close(window);
 	}
 	sfRenderWindow_clear(window, sfBlack);
@@ -42,7 +42,7 @@ static void interpret_and_print_log(lemipc_t *lem)
 		printf("%s\n", interp_msg);
 		if (atoi(t[0]) == 2 && atoi(t[2]) == 3)
 			edit_target(atoi(t[1]), atoi(t[3]), atoi(t[4]),
-				    &lem->trg_list);
+				&lem->trg_list);
 		free(msg);
 		free(interp_msg);
 		free_wordtab(t);
@@ -67,7 +67,7 @@ void *graphical_render(void *arg)
 	size_t height = lem->mem->height;
 	size_t cell_size = get_cell_size(width, height, WIN_WIDTH, WIN_HEIGHT);
 	sfRenderWindow *window = open_window("LemIPC", cell_size * (width + 2),
-					     cell_size * (height + 2));
+					cell_size * (height + 2));
 
 	win_size.x = cell_size * (width + 2);
 	win_size.y = cell_size * (height + 2);

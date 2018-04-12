@@ -89,8 +89,8 @@ void put_targets(sfRenderWindow *window, lemipc_t *lem)
 		y = tmp->data->y;
 		color = get_color((unsigned int) tmp->data->team_id);
 		draw_rectangle(target, window, crvec((x + 1) * s + s / 4,
-						     (y + 1) * s + s / 4),
-			       transform_color(color));
+						(y + 1) * s + s / 4),
+						transform_color(color));
 		tmp = tmp->next;
 	}
 	sfRectangleShape_destroy(target);

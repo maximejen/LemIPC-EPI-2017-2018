@@ -29,10 +29,10 @@ static int create_threads(lemipc_t *lem)
 	if (lem->is_first) {
 		if (lem->args->is_graphical) {
 			ret = pthread_create(&lem->graph_thread, NULL,
-					     &graphical_render, lem);
+					&graphical_render, lem);
 		} else {
 			ret = pthread_create(&lem->graph_thread, NULL,
-					     &textual_render, lem);
+					&textual_render, lem);
 		}
 		if (ret != 0)
 			perror("pthread_create");
@@ -55,7 +55,7 @@ static int join_threads(lemipc_t *lem)
 
 	if (lem->is_first) {
 		if (lem->graph_thread &&
-		    pthread_join(lem->graph_thread, &status))
+		pthread_join(lem->graph_thread, &status))
 			perror("pthread_join");
 		printf("Graphical thread joined, the game is finished\n");
 	}
@@ -121,4 +121,3 @@ int lemipc_start(args_t *args)
 	}
 	return (0);
 }
-

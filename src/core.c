@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** lemIPC
 ** File description:
-** main.c
+** core.c
 */
 
 #include <string.h>
@@ -24,14 +24,11 @@ static const char *ERROR_MESSAGE = "Error : The team_id should be greater"
 
 static const char *HELP_MESSAGE =
 	"USAGE\n"
-		"\t./lemipc PATH TEAM_NUMBER [-g|--graphical]\n\n"
+		"\t./lemipc PATH TEAM_NUMBER\n\n"
 		"DESCRIPTION\n"
-		"\tPATH\t\tpath for the IPC generation\n"
+		"\tPATH\t\tnumber of philosophers\n"
 		"\tTEAM_NUMBER\tteam number of the current champion"
-		"(greater than 0)\n"
-		"\t--graphical\ttrigger the graphical mode.\n\t\t\tYou "
-		"can find a little "
-		"rectangle that represent the target of the team\n";
+		"(greater than 0)";
 
 static void fill_string(char **str, const char *to_copy)
 {
@@ -75,7 +72,7 @@ static void finish_program(args_t *args)
 	free(args->team_name);
 }
 
-int main(int argc, char **argv)
+int core(int argc, char **argv)
 {
 	args_t args = {NULL, -1, NULL, 0};
 	int ret = 84;

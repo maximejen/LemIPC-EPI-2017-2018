@@ -156,8 +156,7 @@ size_t get_cell_size(size_t width, size_t height, float, float);
 void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
 	sfVector2f *win_size);
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
-		    sfVector2f position, sfColor color);
-
+		sfVector2f position, sfColor color);
 void edit_target(int team_id, int x, int y, team_target_list_t **);
 void reset_target_stack(team_target_list_t *);
 void put_targets(sfRenderWindow *window, lemipc_t *lem);

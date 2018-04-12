@@ -10,8 +10,6 @@
 #include "../../../include/lemipc.h"
 #include "../../../include/color.h"
 
-int CONTINUE;
-
 static const char *chars[8] = {
 	"┏", "┓", "┗", "┛", "━", "┃", "━━", "━━━━━━━━"
 };
@@ -27,7 +25,7 @@ void print_char(int team_id)
 {
 	color_t *color = get_color((unsigned int)team_id);
 	printf("\e[48;5;%d;%d;%dm  \e[0m",
-	       color->r, color->g, color->b);
+		color->r, color->g, color->b);
 	fflush(stdout);
 }
 

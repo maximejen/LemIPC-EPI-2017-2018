@@ -32,13 +32,13 @@ char *interpret_message(const char *content)
 		sub = atoi(tab[0]);
 		if (sub == 3)
 			asprintf(&ret, MSG_TYPE[type - 1], SUB[sub - 1],
-				 tab[1]);
+				tab[1]);
 		if ((sub == 1 || sub == 2) && type - 1 < 2)
 			asprintf(&ret, MSG_TYPE[type - 1], SUB[sub - 1],
-				 tab[1]);
+				tab[1]);
 		else if (sub == 1 || sub == 2)
 			asprintf(&ret, MSG_TYPE[type - 1], tab[1], tab[3],
-				 tab[4]);
+				tab[4]);
 	}
 	free_wordtab(tab);
 	return (ret);

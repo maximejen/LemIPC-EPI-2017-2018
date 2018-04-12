@@ -35,8 +35,7 @@ void init_shared_memory(lemipc_t *lem)
 			lem->mem->width = WIDTH;
 			lem->mem->height = HEIGHT;
 		}
-	}
-	else
+	} else
 		lem->mem = shmat(lem->shm_id, NULL, SHM_R | SHM_W);
 	if (should_i_be_commander(lem))
 		lem->is_commander = 1;

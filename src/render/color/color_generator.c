@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include "../../../include/color.h"
 
-
 color_t *find_color_by_key(color_list_t **list, unsigned int key)
 {
 	color_list_t *tmp = *list;

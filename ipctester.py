@@ -7,7 +7,6 @@ import sys, re, os
 
 seed(os.getpid())
 
-global path
 path = "./lemipc " + check_output("pwd", shell = True).decode("utf8").strip() + " "
 
 def help():
