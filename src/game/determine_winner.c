@@ -94,7 +94,7 @@ int find_winner(lemipc_t *lem)
 			save = tmp->data;
 		tmp = tmp->next;
 	}
-	while (list && list->next)
+	while (list)
 		remove_team_from_list(&list, list);
 	free(list);
 	list = NULL;
