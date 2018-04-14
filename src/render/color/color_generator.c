@@ -46,7 +46,7 @@ color_t *get_color(int key)
 	color_t *color = find_color_by_key(&list, (unsigned int) key);
 
 	if (key == -1) {
-		reset_colors(list);
+		reset_colors(&list);
 		return (NULL);
 	}
 	if (!color) {
@@ -79,12 +79,12 @@ void remove_from_list(color_list_t **list, color_list_t *element)
 	element = NULL;
 }
 
-void reset_colors(color_list_t *list)
+void reset_colors(color_list_t **list)
 {
-	while (list) {
-		remove_from_list(&list, list);
+	while (*list) {
+		remove_from_list(list, *list);
 	}
-	free(list);
-	list = NULL;
+	free(*list);
+	*list = NULL;
 }
 
