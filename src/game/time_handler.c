@@ -37,7 +37,7 @@ void *time_handle(void *arg)
 			count = 0;
 			continue;
 		}
-		reset_target_stack(lem->trg_list);
+		reset_target_stack(&lem->trg_list);
 		sleep(1);
 		count++;
 		asprintf(&str, "3;%d;4", TIMEOUT - count);

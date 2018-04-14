@@ -158,7 +158,7 @@ void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
 		sfVector2f position, sfColor color);
 void edit_target(int team_id, int x, int y, team_target_list_t **);
-void reset_target_stack(team_target_list_t *);
+void reset_target_stack(team_target_list_t **);
 void put_targets(sfRenderWindow *window, lemipc_t *lem);
 
 /*

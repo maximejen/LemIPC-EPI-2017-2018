@@ -96,10 +96,10 @@ void put_targets(sfRenderWindow *window, lemipc_t *lem)
 	sfRectangleShape_destroy(target);
 }
 
-void reset_target_stack(team_target_list_t *list)
+void reset_target_stack(team_target_list_t **list)
 {
-	while (list)
-		remove_target_from_list(&list, list);
-	free(list);
-	list = NULL;
+	while (*list)
+		remove_target_from_list(list, *list);
+	free(*list);
+	*list = NULL;
 }

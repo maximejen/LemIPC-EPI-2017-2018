@@ -74,7 +74,7 @@ void *graphical_render(void *arg)
 	printf("%s", WELCOME_MESSAGE);
 	render_window(window, lem, &win_size);
 	sfRenderWindow_destroy(window);
-	reset_target_stack(lem->trg_list);
+	reset_target_stack(&lem->trg_list);
 	kill(0, SIGINT);
 	return ("OK");
 }
