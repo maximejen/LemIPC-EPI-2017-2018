@@ -84,6 +84,7 @@ int find_winner(lemipc_t *lem)
 	size_t w = lem->mem->width;
 	mbr_counter_list_t *tmp;
 	static mbr_counter_list_t *list = NULL;
+	int ret = 0;
 
 	for (size_t i = 0 ; i < h * w ; i++)
 		if (lem->mem->map[i / h][i % w] > 0)
@@ -94,9 +95,8 @@ int find_winner(lemipc_t *lem)
 			save = tmp->data;
 		tmp = tmp->next;
 	}
+	ret = save->team_id;
 	while (list)
 		remove_team_from_list(&list, list);
-	free(list);
-	list = NULL;
-	return (save ? save->team_id : 0);
+	return (ret);
 }
