@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 		return (ret);
 	}
 	if (argc >= 2 && (strcmp(argv[1], FLAGS[1]) == 0 ||
-			strcmp(argv[1], FLAGS[2]) == 0)) {
+		strcmp(argv[1], FLAGS[2]) == 0)) {
 		printf("%s\n", HELP_MESSAGE);
 		return (0);
 	}

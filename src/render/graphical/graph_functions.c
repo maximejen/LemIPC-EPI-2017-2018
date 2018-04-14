@@ -16,8 +16,8 @@ sfRenderWindow *open_window(const char *title, size_t width, size_t height)
 	sfRenderWindow *window;
 
 	mode.bitsPerPixel = 32;
-	mode.width = (unsigned int) width;
-	mode.height = (unsigned int) height;
+	mode.width = (unsigned int)width;
+	mode.height = (unsigned int)height;
 	window = sfRenderWindow_create(mode, title, sfClose | sfResize, NULL);
 	sfRenderWindow_setMouseCursorVisible(window, sfFalse);
 	return (window);
@@ -61,7 +61,7 @@ sfVector2f crvec(float x, float y)
 }
 
 void draw_rectangle(sfRectangleShape *cell, sfRenderWindow *window,
-		sfVector2f position, sfColor color)
+	sfVector2f position, sfColor color)
 {
 	sfRectangleShape_setPosition(cell, position);
 	sfRectangleShape_setFillColor(cell, color);

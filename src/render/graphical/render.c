@@ -20,7 +20,7 @@ static void draw_window(sfRenderWindow *window, lemipc_t *lem,
 
 	while (sfRenderWindow_pollEvent(window, &e)) {
 		if (e.type == sfEvtClosed || (is_esc_pressed(&e) == 1) ||
-		!CONTINUE)
+			!CONTINUE)
 			sfRenderWindow_close(window);
 	}
 	sfRenderWindow_clear(window, sfBlack);
@@ -67,7 +67,7 @@ void *graphical_render(void *arg)
 	size_t height = lem->mem->height;
 	size_t cell_size = get_cell_size(width, height, WIN_WIDTH, WIN_HEIGHT);
 	sfRenderWindow *window = open_window("LemIPC", cell_size * (width + 2),
-					cell_size * (height + 2));
+		cell_size * (height + 2));
 
 	win_size.x = cell_size * (width + 2);
 	win_size.y = cell_size * (height + 2);

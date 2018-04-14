@@ -26,8 +26,8 @@ int init_player(lemipc_t *lem, player_t *player)
 	player->sem_id = lem->sem_id;
 	player->msg_id = lem->msg_id;
 	player->team_id = lem->args->team_id;
-	player->tx = (int) (lem->mem->width / 2);
-	player->ty = (int) (lem->mem->height / 2);
+	player->tx = (int)(lem->mem->width / 2);
+	player->ty = (int)(lem->mem->height / 2);
 	if (determine_starting_position(player))
 		return (dprintf(2, "%s", ERROR_MSG) * 0 + 1);
 	player->mem->map[player->posy][player->posx] = player->team_id;
@@ -50,8 +50,8 @@ int should_player_die(player_t *player)
 	get_nearby_cells(range, player);
 	for (int i = 0 ; i < 8 * 8 ; i++) {
 		if (i / 8 == i % 8 ||
-		range[i / 8] <= 0 || range[i % 8] <= 0 ||
-		range[i / 8] == team_id || range[i % 8] == team_id)
+			range[i / 8] <= 0 || range[i % 8] <= 0 ||
+			range[i / 8] == team_id || range[i % 8] == team_id)
 			continue;
 		if (range[i / 8] == range[i % 8])
 			return (1);

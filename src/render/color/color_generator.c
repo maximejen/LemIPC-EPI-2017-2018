@@ -43,14 +43,14 @@ int add_color_to_list(color_list_t **list, color_t *color)
 color_t *get_color(int key)
 {
 	static color_list_t *list = NULL;
-	color_t *color = find_color_by_key(&list, (unsigned int) key);
+	color_t *color = find_color_by_key(&list, (unsigned int)key);
 
 	if (key == -1) {
 		reset_colors(&list);
 		return (NULL);
 	}
 	if (!color) {
-		color = generate_color((unsigned int) key);
+		color = generate_color((unsigned int)key);
 		if (!color)
 			return (NULL);
 		add_color_to_list(&list, color);

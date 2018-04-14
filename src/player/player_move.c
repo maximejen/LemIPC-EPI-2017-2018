@@ -70,9 +70,10 @@ void follow_the_order(player_t *player)
 			move_top(player);
 		else
 			move_bot(player);
-	else
+	else {
 		if (x - player->posx < 0)
 			move_left(player);
 		else
 			move_right(player);
+	}
 }

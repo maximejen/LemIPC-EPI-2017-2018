@@ -59,8 +59,7 @@ static int commander_actions(commander_t *c)
 		}
 		send_message(c->msg_id, LOG_CHANNEL, order);
 		free(order);
-	}
-	else if (c->game_started && !count_players(c))
+	} else if (c->game_started && !count_players(c))
 		return (0);
 	else {
 		c->tx = rand_nbr(c->mem->width);

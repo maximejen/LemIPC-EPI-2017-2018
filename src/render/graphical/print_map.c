@@ -21,9 +21,9 @@ size_t get_cell_size(size_t width, size_t height,
 	size_t size;
 
 	if (is_height_smaller) {
-		size = (size_t) (win_height / (height + 2));
+		size = (size_t)(win_height / (height + 2));
 	} else {
-		size = (size_t) (win_width / (width + 2));
+		size = (size_t)(win_width / (width + 2));
 	}
 	return (size);
 }
@@ -43,7 +43,7 @@ void print_line_graph(lemipc_t *lem, size_t i, sfRenderWindow *window,
 
 	sfRectangleShape_setSize(cell, crvec(size, size));
 	for (size_t j = 0 ; j < width ; j++) {
-		color = get_color((unsigned int) lem->mem->map[i][j]);
+		color = get_color((unsigned int)lem->mem->map[i][j]);
 		draw_rectangle(cell, window,
 			crvec((j + 1) * size, (i + 1) * size),
 			transform_color(color));
@@ -78,4 +78,3 @@ void print_map_graph(lemipc_t *lem, sfRenderWindow *window,
 	draw_rectangle(cell, window, crvec(0, (height + 1) * size), sfWhite);
 	sfRectangleShape_destroy(cell);
 }
-

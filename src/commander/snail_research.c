@@ -36,7 +36,7 @@ static int find_in_line(tmp_data_t *s, int **tmp, int team_id)
 {
 	for (int i = 0 ; i < s->size ; i++) {
 		if (is_in_range(*s->x, *s->y, s->width, s->height) &&
-		tmp[*s->y][*s->x] != team_id && tmp[*s->y][*s->x] > 0)
+			tmp[*s->y][*s->x] != team_id && tmp[*s->y][*s->x] > 0)
 			return (1);
 		if (is_in_range(*s->x, *s->y, s->width, s->height))
 			tmp[*s->y][*s->x] = -1;
@@ -80,7 +80,7 @@ static int can_continue(int **tmp, tmp_data_t *s, commander_t *cmd)
 
 	if (!CONTINUE || !tmp)
 		return (0);
-	if ((size_t) s->size >= w || (size_t) s->size >= h)
+	if ((size_t)s->size >= w || (size_t)s->size >= h)
 		ret = 0;
 	for (size_t i = 0 ; !ret && i < h * w ; i++) {
 		if (tmp[i / h][i % w] != -1)

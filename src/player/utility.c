@@ -64,9 +64,9 @@ int is_in_range(int x, int y, size_t w, size_t h)
 {
 	int ret = 1;
 
-	if (x < 0 || (size_t) x >= w)
+	if (x < 0 || (size_t)x >= w)
 		ret = 0;
-	if (ret && (y < 0 || (size_t) y >= h))
+	if (ret && (y < 0 || (size_t)y >= h))
 		ret = 0;
 	return (ret);
 }
@@ -83,17 +83,17 @@ void get_nearby_cells(int *nearby, player_t *p)
 	size_t h = p->mem->height;
 
 	nearby[0] = is_in_range(x - 1, y - 1, w, h) ? p->mem->map[y - 1][x - 1]
-						: -1;
+		: -1;
 	nearby[1] = is_in_range(x, y - 1, w, h) ? p->mem->map[y - 1][x] : -1;
 	nearby[2] = is_in_range(x + 1, y - 1, w, h) ? p->mem->map[y - 1][x + 1]
-						: -1;
+		: -1;
 	nearby[3] = is_in_range(x - 1, y, w, h) ? p->mem->map[y][x - 1] : -1;
 	nearby[4] = is_in_range(x + 1, y, w, h) ? p->mem->map[y][x + 1] : -1;
 	nearby[5] = is_in_range(x - 1, y + 1, w, h) ? p->mem->map[y + 1][x - 1]
-						: -1;
+		: -1;
 	nearby[6] = is_in_range(x, y + 1, w, h) ? p->mem->map[y + 1][x] : -1;
 	nearby[7] = is_in_range(x + 1, y + 1, w, h) ? p->mem->map[y + 1][x + 1]
-						: -1;
+		: -1;
 }
 
 int get_commander_orders(player_t *p, lemipc_t *lem)

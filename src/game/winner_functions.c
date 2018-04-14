@@ -16,7 +16,7 @@ void print_winner(lemipc_t *lem)
 
 	t = find_winner(lem);
 	if (t) {
-		c = get_color((unsigned int) t);
+		c = get_color((unsigned int)t);
 		printf("\nAnd the winner of THE FIGHT is.");
 		fflush(stdout);
 		sleep(1);
