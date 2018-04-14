@@ -87,4 +87,3 @@ void reset_colors(color_list_t **list)
 	free(*list);
 	*list = NULL;
 }
-
