@@ -95,7 +95,7 @@ int find_winner(lemipc_t *lem)
 			save = tmp->data;
 		tmp = tmp->next;
 	}
-	ret = save->team_id;
+	ret = save ? save->team_id : lem->args->team_id;
 	while (list)
 		remove_team_from_list(&list, list);
 	return (ret);
